@@ -1,0 +1,3168 @@
+# ==================================================
+# Path: E:\HTMLCSS\PROJECT_ONTAP\Project_Movix\client
+# Detected tech: docker, gitlab_ci, javascript, python, react, typescript
+# ==================================================
+
+## DIRECTORY STRUCTURE
+```
+client/
+├── .git/
+├── node_modules/
+├── public/
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src/
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── videos/
+│   ├── components/
+│   │   ├── ErrorDisplay/
+│   │   │   └── index.jsx
+│   │   ├── FIlmAdminList/
+│   │   │   └── index.jsx
+│   │   ├── Form/
+│   │   │   └── FilmForm.jsx
+│   │   ├── Loading/
+│   │   │   └── index.jsx
+│   │   └── MenuSider/
+│   │       └── index.jsx
+│   ├── constants/
+│   │   ├── api.js
+│   │   ├── image.js
+│   │   ├── index.js
+│   │   ├── pagination.js
+│   │   ├── roles.js
+│   │   └── status.js
+│   ├── helpers/
+│   │   └── uploadImage.js
+│   ├── hooks/
+│   │   └── useImageUpload.js
+│   ├── layouts/
+│   │   ├── LayoutAdmin/
+│   │   │   ├── LayoutAdmin.scss
+│   │   │   └── index.jsx
+│   │   └── LayoutUser/
+│   │       └── index.jsx
+│   ├── pages/
+│   │   ├── admin/
+│   │   │   ├── Dashboard/
+│   │   │   │   └── index.jsx
+│   │   │   ├── Login/
+│   │   │   │   ├── Login.scss
+│   │   │   │   └── index.jsx
+│   │   │   ├── cinemas/
+│   │   │   │   ├── CinemaCreatePage.jsx
+│   │   │   │   ├── CinemaDetailPage.jsx
+│   │   │   │   ├── CinemaEditPage.jsx
+│   │   │   │   ├── CinemaListPage.jsx
+│   │   │   │   ├── cinemas.scss
+│   │   │   │   └── index.js
+│   │   │   └── films/
+│   │   │       ├── FilmCreatePage.jsx
+│   │   │       ├── FilmDetailPage.jsx
+│   │   │       ├── FilmEditPage.jsx
+│   │   │       ├── FilmListPage.jsx
+│   │   │       ├── films.scss
+│   │   │       └── index.js
+│   │   ├── common/
+│   │   │   ├── LogoutPage.jsx
+│   │   │   ├── NotFound.jsx
+│   │   │   └── Unauthorized.jsx
+│   │   └── user/
+│   ├── redux/
+│   │   ├── actions/
+│   │   │   └── auth.action.js
+│   │   └── reducers/
+│   │       ├── auth.reducer.js
+│   │       └── index.js
+│   ├── routes/
+│   │   ├── AllRoutes.jsx
+│   │   ├── PrivateRoutes.jsx
+│   │   ├── adminRoutes.js
+│   │   ├── commonRoutes.js
+│   │   ├── index.js
+│   │   └── userRoutes.js
+│   ├── services/
+│   │   ├── authServices.js
+│   │   ├── categoryServices.js
+│   │   ├── cinemaServices.js
+│   │   ├── filmServices.js
+│   │   └── userServices.js
+│   ├── utils/
+│   │   ├── axiosClient.js
+│   │   └── index.js
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
+│   ├── index.js
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   └── store.js
+├── .env
+├── .gitignore
+├── README.md
+├── package-lock.json
+├── package.json
+└── source_dump.txt
+```
+
+## FILE CONTENTS
+
+### src\App.js
+```js
+import './App.css';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchUser } from './redux/actions/auth.action';
+import AllRoutes from './routes/AllRoutes';
+
+function App() {
+  const dispatch = useDispatch();
+   useEffect(() => {
+    dispatch(fetchUser()); // gọi 1 lần khi load trang
+  }, [dispatch]);
+
+  return (
+    <>
+      <AllRoutes />
+    </>
+  );
+}
+
+export default App;
+
+```
+
+### src\App.test.js
+```js
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+```
+
+### src\index.js
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './store';
+import '@ant-design/v5-patch-for-react-19';
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
+
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+```
+
+### src\reportWebVitals.js
+```js
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+```
+
+### src\setupTests.js
+```js
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+```
+
+### src\store.js
+```js
+import { createStore, applyMiddleware } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // dùng localStorage
+import {thunk} from "redux-thunk";
+import allReducers from "./redux/reducers";
+
+// Config redux-persist
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"] // ✅ chỉ persist reducer `auth`
+};
+
+// Gộp reducer persist
+const persistedReducer = persistReducer(persistConfig, allReducers);
+
+// Tạo store
+const store = createStore(
+  persistedReducer,
+  applyMiddleware(thunk)
+);
+
+// Tạo persistor để sử dụng trong PersistGate
+const persistor = persistStore(store);
+
+export { store, persistor };
+
+```
+
+### src\components\ErrorDisplay\index.jsx
+```jsx
+import { Alert, Button } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
+
+const ErrorDisplay = ({ 
+  message = "Có lỗi xảy ra", 
+  onRetry = null,
+  showRetry = true 
+}) => {
+  return (
+    <div style={{ padding: '20px' }}>
+      <Alert
+        message="Lỗi"
+        description={message}
+        type="error"
+        showIcon
+        action={
+          showRetry && onRetry && (
+            <Button size="small" icon={<ReloadOutlined />} onClick={onRetry}>
+              Thử lại
+            </Button>
+          )
+        }
+      />
+    </div>
+  );
+};
+
+export default ErrorDisplay;
+```
+
+### src\components\FIlmAdminList\index.jsx
+```jsx
+import React, { useState, useEffect } from 'react';
+import { 
+  Table, 
+  Image, 
+  Button, 
+  Tag, 
+  Space, 
+  Popconfirm, 
+  message, 
+  Tooltip 
+} from 'antd';
+import {
+  EyeOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { 
+  getAllFilms, 
+  deleteFilm, 
+  updateFilmStatus, 
+  updateFilmTrending 
+} from '../../services/filmServices';
+import Loading from '../Loading';
+import ErrorDisplay from '../ErrorDisplay';
+
+const FilmAdminList = () => {
+  const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [films, setFilms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [actionLoading, setActionLoading] = useState({});
+
+  // Fetch films data
+  const fetchFilms = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await getAllFilms();
+      console.log('result', result);
+      setFilms(result.data || []);
+    } catch (err) {
+      console.error('Error fetching films:', err);
+      setError(err.response?.data?.message || 'Không thể tải danh sách phim');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFilms();
+  }, []);
+
+  // Handle status toggle
+  const handleStatusToggle = async (film) => {
+    const filmId = film._id;
+    const newStatus = film.status === 'active' ? 'inactive' : 'active';
+    
+    try {
+      setActionLoading(prev => ({ ...prev, [`status_${filmId}`]: true }));
+      
+      await updateFilmStatus(filmId, newStatus);
+      
+      // Update local state
+      setFilms(prev => 
+        prev.map(item => 
+          item._id === filmId 
+            ? { ...item, status: newStatus }
+            : item
+        )
+      );
+      
+      messageApi.success(
+        `Đã ${newStatus === 'active' ? 'kích hoạt' : 'vô hiệu hóa'} phim thành công`
+      );
+    } catch (err) {
+      console.error('Error updating status:', err);
+      messageApi.error(err.response?.data?.message || 'Không thể cập nhật trạng thái');
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`status_${filmId}`]: false }));
+    }
+  };
+
+  // Handle trending toggle
+  const handleTrendingToggle = async (film) => {
+    const filmId = film._id;
+    const newTrending = !film.isTrending;
+    
+    try {
+      setActionLoading(prev => ({ ...prev, [`trending_${filmId}`]: true }));
+      
+      await updateFilmTrending(filmId, newTrending);
+      
+      // Update local state
+      setFilms(prev => 
+        prev.map(item => 
+          item._id === filmId 
+            ? { ...item, isTrending: newTrending }
+            : item
+        )
+      );
+      
+      messageApi.success(
+        `Đã ${newTrending ? 'đánh dấu' : 'bỏ đánh dấu'} phim thịnh hành`
+      );
+    } catch (err) {
+      console.error('Error updating trending:', err);
+      messageApi.error(err.response?.data?.message || 'Không thể cập nhật trạng thái thịnh hành');
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`trending_${filmId}`]: false }));
+    }
+  };
+
+  // Handle delete film
+  const handleDelete = async (filmId) => {
+    try {
+      setActionLoading(prev => ({ ...prev, [`delete_${filmId}`]: true }));
+      
+      await deleteFilm(filmId);
+      
+      // Remove from local state
+      setFilms(prev => prev.filter(item => item._id !== filmId));
+      
+      messageApi.success('Xóa phim thành công');
+    } catch (err) {
+      console.error('Error deleting film:', err);
+      messageApi.error(err.response?.data?.message || 'Không thể xóa phim');
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`delete_${filmId}`]: false }));
+    }
+  };
+
+  // Table columns
+  const columns = [
+    {
+      title: 'Ảnh bìa',
+      dataIndex: 'thumbnail',
+      key: 'thumbnail',
+      width: 120,
+      align: 'center',
+      render: (thumbnail, record) => (
+        <Image
+          src={thumbnail}
+          alt={record.title}
+          width={80}
+          height={120}
+          style={{ objectFit: 'cover', borderRadius: '8px' }}
+          preview={{
+            mask: <div style={{ fontSize: '12px' }}>Xem ảnh</div>
+          }}
+        />
+      ),
+    },
+    {
+      title: 'Tên phim',
+      dataIndex: 'title',
+      key: 'title',
+      render: (title) => (
+        <div style={{ fontWeight: 'bold', maxWidth: '200px' }}>
+          {title}
+        </div>
+      ),
+    },
+    {
+      title: 'Thời lượng',
+      dataIndex: 'duration',
+      key: 'duration',
+      width: 120,
+      align: 'center',
+      render: (duration) => `${duration} phút`,
+    },
+    {
+      title: 'Ngày khởi chiếu',
+      dataIndex: 'releaseDate',
+      key: 'releaseDate',
+      align: 'center',
+      width: 160,
+      render: (date) => dayjs(date).format('DD/MM/YYYY'),
+    },
+    {
+      title: 'Hình thức chiếu',
+      dataIndex: 'availableFormats',
+      key: 'availableFormats',
+      width: 150,
+      render: (formats) => (
+        <div>
+          {formats?.map(format => (
+            <Tag key={format} color="blue" style={{ margin: '2px' }}>
+              {format}
+            </Tag>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Giới hạn tuổi',
+      dataIndex: 'ageRating',
+      key: 'ageRating',
+      width: 100,
+      align: 'center',
+      render: (ageRating) => (
+        <Tag color="orange">{ageRating}</Tag>
+      ),
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      width: 120,
+      align: 'center',
+      render: (status, record) => (
+        <Tag
+          color={status === 'active' ? 'green' : 'red'}
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleStatusToggle(record)}
+        >
+          {actionLoading[`status_${record._id}`] 
+            ? 'Đang cập nhật...' 
+            : status === 'active' ? 'Hoạt động' : 'Ngưng hoạt động'
+          }
+        </Tag>
+      ),
+    },
+    {
+      title: 'Thịnh hành',
+      dataIndex: 'isTrending',
+      key: 'isTrending',
+      width: 120,
+      align: 'center',
+      render: (isTrending, record) => (
+        <Tag
+          color={isTrending ? 'gold' : 'default'}
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleTrendingToggle(record)}
+        >
+          {actionLoading[`trending_${record._id}`] 
+            ? 'Đang cập nhật...' 
+            : isTrending ? 'Thịnh hành' : 'Bình thường'
+          }
+        </Tag>
+      ),
+    },
+    {
+      title: 'Hành động',
+      key: 'actions',
+      width: 150,
+      align: 'center',
+      render: (_, record) => (
+        <Space size="small">
+          <Tooltip title="Xem chi tiết">
+            <Button
+              type="primary"
+              icon={<EyeOutlined />}
+              
+              onClick={() => navigate(`/admin/films/${record._id}`)}
+            />
+          </Tooltip>
+          
+          <Tooltip title="Chỉnh sửa">
+            <Button
+              type="default"
+              icon={<EditOutlined />}
+              
+              onClick={() => navigate(`/admin/films/edit/${record._id}`)}
+            />
+          </Tooltip>
+          
+          <Tooltip title="Xóa">
+            <Popconfirm
+              title="Xác nhận xóa"
+              description={`Bạn có chắc muốn xóa phim "${record.title}"?`}
+              onConfirm={() => handleDelete(record._id)}
+              okText="Xóa"
+              cancelText="Hủy"
+              okType="danger"
+            >
+              <Button
+                type="primary"
+                danger
+                icon={<DeleteOutlined />}
+                
+                loading={actionLoading[`delete_${record._id}`]}
+              />
+            </Popconfirm>
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
+
+  if (loading) return <Loading tip="Đang tải danh sách phim..." />;
+  
+  if (error) {
+    return (
+      <ErrorDisplay 
+        message={error}
+        onRetry={fetchFilms}
+      />
+    );
+  }
+
+  return (
+    <>
+      {contextHolder}
+      <Table
+        columns={columns}
+        dataSource={films}
+        rowKey="_id"
+        pagination={{
+          total: films.length,
+          pageSize: 10,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total, range) => 
+            `${range[0]}-${range[1]} của ${total} phim`,
+          pageSizeOptions: ['10', '20', '50', '100'],
+        }}
+        scroll={{ x: 1200 }}
+        size="middle"
+        
+        style={{ background: '#fff', borderRadius: '8px' }}
+      />
+    </>
+  );
+};
+
+export default FilmAdminList;
+```
+
+### src\components\Form\FilmForm.jsx
+```jsx
+import {
+  Button,
+  Col,
+  Form,
+  Image,
+  Input,
+  Row,
+  Select,
+  Switch,
+  Upload,
+  DatePicker,
+  InputNumber,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import ImgCrop from "antd-img-crop";
+import { useEffect, useState, useRef } from "react";
+import { getCategories } from "../../services/categoryServices";
+import useImageUpload from "../../hooks/useImageUpload";
+import dayjs from "dayjs";
+
+const { TextArea } = Input;
+
+function FilmForm({
+  onFinish,
+  onCancel,
+  initialValues,
+  submitButtonText = "Cập nhật",
+}) {
+  const [form] = Form.useForm();
+  const [categories, setCategories] = useState([]);
+  const initialValuesSetRef = useRef(false);
+
+  // Sử dụng useImageUpload hook
+  const {
+    fileList,
+    previewOpen,
+    previewImage,
+    uploading,
+    setPreviewOpen,
+    setInitialImage,
+    getFinalImageUrl,
+    resetAll,
+    uploadProps,
+  } = useImageUpload({
+    defaultImage: "https://i.pinimg.com/736x/0b/0a/de/0b0adeec0cb5e9a427a616df27ba04f3.jpg",
+    maxCount: 1,
+    onUploadSuccess: (url) => console.log("Upload thành công:", url),
+    onUploadError: (error) => console.error("Upload lỗi:", error),
+  });
+
+  // Fetch categories từ API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const result = await getCategories();
+        const categoryListSelect = result.map((item) => ({
+          label: item.title,
+          value: item._id,
+        }));
+        setCategories(categoryListSelect);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Set initial values chỉ một lần khi có dữ liệu từ props
+  useEffect(() => {
+    if (initialValues && !initialValuesSetRef.current) {
+      // Convert arrays thành string để hiển thị trong Input
+      const formattedValues = { ...initialValues };
+
+      // Convert arrays thành string với dấu phẩy
+      if (Array.isArray(initialValues.otherTitles)) {
+        formattedValues.otherTitles = initialValues.otherTitles.join(", ");
+      }
+
+      if (Array.isArray(initialValues.actors)) {
+        formattedValues.actors = initialValues.actors.join(", ");
+      }
+
+      if (Array.isArray(initialValues.directors)) {
+        formattedValues.directors = initialValues.directors.join(", ");
+      }
+
+      // Convert categoryIds từ object -> array string
+      if (Array.isArray(initialValues.categoryIds)) {
+        formattedValues.categoryIds = initialValues.categoryIds.map(
+          (c) => c._id
+        );
+      }
+
+      // Set initial image using hook
+      if (initialValues.thumbnail) {
+        setInitialImage(initialValues.thumbnail);
+      }
+
+      // Set form values
+      form.setFieldsValue({
+        ...formattedValues,
+        releaseDate: initialValues.releaseDate
+          ? dayjs(initialValues.releaseDate)
+          : null,
+      });
+
+      initialValuesSetRef.current = true; // Đánh dấu đã set xong
+    }
+  }, [initialValues, form, setInitialImage]);
+
+  // Reset flag khi initialValues thay đổi
+  useEffect(() => {
+    initialValuesSetRef.current = false;
+  }, [initialValues]);
+
+  const handleFinish = async (values) => {
+    console.log("Form values before processing:", values);
+    try {
+      // Xử lý thumbnail bằng hook
+      const thumbnailUrl = await getFinalImageUrl(initialValues?.thumbnail);
+      values.thumbnail = thumbnailUrl;
+
+      // Convert string thành array cho otherTitles, actors, directors
+      if (values.otherTitles) {
+        values.otherTitles = values.otherTitles
+          .split(",")
+          .map((item) => item.trim())
+          .filter((item) => item !== "");
+      } else {
+        values.otherTitles = [];
+      }
+
+      if (values.actors) {
+        values.actors = values.actors
+          .split(",")
+          .map((item) => item.trim())
+          .filter((item) => item !== "");
+      } else {
+        values.actors = [];
+      }
+
+      if (values.directors) {
+        values.directors = values.directors
+          .split(",")
+          .map((item) => item.trim())
+          .filter((item) => item !== "");
+      } else {
+        values.directors = [];
+      }
+
+      // ✅ Fix: Xử lý status đúng cách
+      // Nếu values.status là boolean thì convert sang string
+      if (typeof values.status === 'boolean') {
+        values.status = values.status ? "active" : "inactive";
+      }
+      // Nếu đã là string thì giữ nguyên
+
+      // Format releaseDate thành MongoDB Date
+      if (values.releaseDate) {
+        values.releaseDate = values.releaseDate.toDate();
+      }
+
+      console.log("Values after processing:", values);
+      const result = await onFinish(values);
+
+      // Chỉ reset form khi onFinish return true (thành công)
+      if (result === true) {
+        form.resetFields();
+        resetAll();
+        initialValuesSetRef.current = false;
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+    }
+  };
+
+  // ✅ Fix: Tạo initialValues đúng cách
+  const getInitialFormValues = () => {
+    const defaultValues = {
+      status: "inactive", // ✅ Mặc định inactive cho form mới
+      isTrending: false,
+      availableFormats: [],
+    };
+
+    // Nếu có initialValues (đang edit), ưu tiên initialValues
+    if (initialValues) {
+      return {
+        ...defaultValues,
+        ...initialValues,
+        releaseDate: initialValues.releaseDate ? dayjs(initialValues.releaseDate) : null,
+      };
+    }
+
+    return defaultValues;
+  };
+
+  return (
+    <Form
+      form={form}
+      onFinish={handleFinish}
+      initialValues={getInitialFormValues()}
+      layout="vertical"
+    >
+      <Row gutter={[20, 5]}>
+        <Col span={24}>
+          <Form.Item
+            name="title"
+            label="Tên phim"
+            rules={[{ required: true, message: "Vui lòng nhập tên phim" }]}
+          >
+            <Input type="text" />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item
+            name="otherTitles"
+            label="Tên khác"
+            tooltip="Nhập các tên khác, cách nhau bằng dấu phẩy"
+          >
+            <Input placeholder="Ví dụ: Tên tiếng Anh, Tên tiếng Hàn, Tên khác..." />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="categoryIds"
+            label="Thể loại"
+            rules={[{ required: true, message: "Vui lòng chọn thể loại" }]}
+          >
+            <Select
+              mode="multiple"
+              allowClear
+              key={categories.value}
+              placeholder="Chọn thể loại"
+              options={categories}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="availableFormats"
+            label="Định dạng chiếu"
+            rules={[
+              { required: true, message: "Vui lòng chọn định dạng chiếu" },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder="Chọn định dạng chiếu"
+              options={[
+                { value: "2D", label: "2D" },
+                { value: "3D", label: "3D" },
+                { value: "IMAX", label: "IMAX" },
+              ]}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item
+            name="actors"
+            label="Diễn viên"
+            rules={[
+              { required: true, message: "Vui lòng nhập ít nhất 1 diễn viên" },
+            ]}
+            tooltip="Nhập tên các diễn viên, cách nhau bằng dấu phẩy"
+          >
+            <Input placeholder="Ví dụ: Ngô Thanh Vân, Trấn Thành, Kiều Minh Tuấn..." />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item
+            name="directors"
+            label="Đạo diễn"
+            tooltip="Nhập tên các đạo diễn, cách nhau bằng dấu phẩy"
+            rules={[
+              { required: true, message: "Vui lòng nhập ít nhất 1 đạo diễn" },
+            ]}
+          >
+            <Input placeholder="Ví dụ: Lý Hải, Victor Vũ, Dustin Nguyễn..." />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="releaseDate"
+            label="Ngày phát hành"
+            rules={[
+              { required: true, message: "Vui lòng chọn ngày phát hành" },
+            ]}
+          >
+            <DatePicker
+              style={{ width: "100%" }}
+              placeholder="Chọn ngày phát hành"
+              format="DD/MM/YYYY"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="duration"
+            label="Thời lượng (phút)"
+            rules={[
+              { required: true, message: "Vui lòng nhập thời lượng phim" },
+            ]}
+          >
+            <InputNumber
+              min={1}
+              placeholder="Nhập thời lượng"
+              style={{ width: "100%" }}
+              addonAfter="phút"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="ageRating"
+            label="Độ tuổi phù hợp"
+            rules={[
+              { required: true, message: "Vui lòng chọn độ tuổi phù hợp" },
+            ]}
+          >
+            <Select
+              placeholder="Chọn độ tuổi phù hợp"
+              options={[
+                { value: "P", label: "P - Phim dành cho mọi lứa tuổi" },
+                { value: "K", label: "K - Phim dành cho trẻ em dưới 13 tuổi" },
+                {
+                  value: "T13",
+                  label: "T13 - Phim dành cho khán giả từ 13 tuổi trở lên",
+                },
+                {
+                  value: "T16",
+                  label: "T16 - Phim dành cho khán giả từ 16 tuổi trở lên",
+                },
+                {
+                  value: "T18",
+                  label: "T18 - Phim dành cho khán giả từ 18 tuổi trở lên",
+                },
+                { value: "C", label: "C - Phim cấm chiếu" },
+              ]}
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="filmLanguage"
+            label="Ngôn ngữ"
+            rules={[{ required: true, message: "Vui lòng nhập ngôn ngữ" }]}
+          >
+            <Input placeholder="Ví dụ: Tiếng Việt, English, 한국어" />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item name="subtitles" label="Phụ đề">
+            <Input placeholder="Ví dụ: Tiếng Việt, English" />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item
+            name="trailer"
+            label="Link Trailer"
+            rules={[
+              {
+                type: "url",
+                message: "Vui lòng nhập URL hợp lệ",
+              },
+            ]}
+          >
+            <Input placeholder="https://www.youtube.com/watch?v=..." />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item
+            name="description"
+            label="Mô tả phim"
+            rules={[{ required: true, message: "Vui lòng nhập mô tả phim" }]}
+          >
+            <TextArea rows={6} placeholder="Nhập mô tả chi tiết về phim" />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            label="Upload Poster"
+            name="thumbnail"
+            valuePropName="fileList"
+          >
+            <ImgCrop
+              showGrid
+              rotationSlider
+              aspectSlider
+              showReset
+              aspect={0.6999}
+            >
+              <Upload
+                {...uploadProps}
+                loading={uploading}
+              >
+                {fileList.length >= 1 ? null : (
+                  <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                  </div>
+                )}
+              </Upload>
+            </ImgCrop>
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item label={null}>
+            {previewImage && (
+              <Image
+                wrapperStyle={{ display: "none" }}
+                preview={{
+                  visible: previewOpen,
+                  onVisibleChange: (visible) => setPreviewOpen(visible),
+                  afterOpenChange: (visible) => !visible && setPreviewOpen(false),
+                }}
+                src={previewImage}
+              />
+            )}
+          </Form.Item>
+        </Col>
+
+        <Col span={4}>
+          <Form.Item
+            name="status"
+            label="Trạng thái hoạt động"
+            valuePropName="checked"
+            getValueFromEvent={(checked) => (checked ? "active" : "inactive")}
+            getValueProps={(value) => ({ checked: value === "active" })}
+          >
+            <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="isTrending"
+            label="Phim xu hướng"
+            valuePropName="checked"
+          >
+            <Switch
+              checkedChildren="Trending"
+              unCheckedChildren="Normal"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={24}>
+          <Form.Item label={null}>
+            <Button className="mr-10" type="primary" htmlType="submit" loading={uploading}>
+              {submitButtonText}
+            </Button>
+            {onCancel && (
+              <Button className="ml-10" onClick={onCancel}>
+                Hủy
+              </Button>
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
+  );
+}
+
+export default FilmForm;
+```
+
+### src\components\Loading\index.jsx
+```jsx
+import { Spin } from "antd";
+
+const Loading = ({ size = "large", tip = "Đang tải..." }) => {
+  return (
+    <div style={{ 
+      textAlign: 'center', 
+      padding: '50px 0',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh'
+    }}>
+      <Spin size={size} tip={tip} spinning={true}>
+        <div style={{ minHeight: '200px', minWidth: '200px' }} />
+      </Spin>
+    </div>
+  );
+};
+
+export default Loading;
+```
+
+### src\components\MenuSider\index.jsx
+```jsx
+import { Menu } from "antd";
+import { Link, useLocation } from "react-router-dom";
+import {
+  DashboardOutlined,
+  VideoCameraOutlined,
+  ShopOutlined,
+  AppstoreOutlined,
+  CalendarOutlined,
+  UserOutlined,
+  CommentOutlined,
+  GiftOutlined,
+  ShoppingCartOutlined,
+} from "@ant-design/icons";
+
+const MenuSider = () => {
+  const location = useLocation();
+
+  const items = [
+    {
+      label: <Link to="/admin/dashboard">Dashboard</Link>,
+      icon: <DashboardOutlined />,
+      key: "/admin/dashboard",
+    },
+    {
+      label: <Link to="/admin/films">Quản lý phim</Link>,
+      icon: <VideoCameraOutlined />,
+      key: "/admin/films",
+    },
+    {
+      label: <Link to="/admin/cinemas">Quản lý rạp chiếu</Link>,
+      icon: <ShopOutlined />,
+      key: "/admin/cinemas",
+    },
+    {
+      label: <Link to="/admin/rooms">Quản lý phòng chiếu</Link>,
+      icon: <AppstoreOutlined />,
+      key: "/admin/rooms",
+    },
+    {
+      label: <Link to="/admin/show-times">Quản lý suất chiếu</Link>,
+      icon: <CalendarOutlined />,
+      key: "/admin/show-times",
+    },
+    {
+      label: <Link to="/admin/users">Quản lý thành viên</Link>,
+      icon: <UserOutlined />,
+      key: "/admin/users",
+    },
+    {
+      label: <Link to="/admin/comments">Quản lý bình luận</Link>,
+      icon: <CommentOutlined />,
+      key: "/admin/comments",
+    },
+    {
+      label: <Link to="/admin/promotions">Quản lý khuyến mãi</Link>,
+      icon: <GiftOutlined />,
+      key: "/admin/promotions",
+    },
+    {
+      label: <Link to="/admin/orders">Quản lý đặt vé</Link>,
+      icon: <ShoppingCartOutlined />,
+      key: "/admin/orders",
+    },
+  ];
+
+  return (
+    <Menu
+      theme="light"
+      mode="inline"
+      selectedKeys={[location.pathname]}
+      items={items}
+    />
+  );
+};
+
+export default MenuSider;
+
+```
+
+### src\constants\api.js
+```js
+export const API_ENDPOINTS = {
+  // Auth
+  AUTH: {
+    LOGIN: '/auth/login',
+    LOGOUT: '/auth/logout',
+    REGISTER: '/auth/register',
+    ME: '/auth/me',
+    REFRESH: '/auth/refresh'
+  },
+  
+  // Films
+  FILMS: {
+    LIST: '/films',
+    CREATE: '/films',
+    DETAIL_BY_ID: (id) => `/films/${id}`,        // Admin: GET by ID
+    DETAIL_BY_SLUG: (slug) => `/films/slug/${slug}`,  // Public: GET by slug
+    UPDATE: (id) => `/films/${id}`,              // Admin: PATCH
+    DELETE: (id) => `/films/${id}`,              // Admin: DELETE
+    UPLOAD_POSTER: (id) => `/films/${id}/poster`
+  },
+
+  // Category
+  CATEGORIES: {
+    LIST: '/categories',
+    CREATE: '/categories',
+    DETAIL: (id) => `/categories/${id}`,
+    UPDATE: (id) => `/categories/${id}`,
+    DELETE: (id) => `/categories/${id}`
+  },
+  
+  // Cinemas
+  CINEMAS: {
+    LIST: '/cinemas',
+    CREATE: '/cinemas',
+    DETAIL_BY_ID: (id) => `/cinemas/${id}`,      // Admin: GET by ID
+    DETAIL_BY_SLUG: (slug) => `/cinemas/slug/${slug}`, // Public: GET by slug
+    UPDATE: (id) => `/cinemas/${id}`,
+    DELETE: (id) => `/cinemas/${id}`,
+    ROOMS: (id) => `/cinemas/${id}/rooms`
+  },
+  
+  // Rooms
+  ROOMS: {
+    LIST: '/rooms',
+    CREATE: '/rooms',
+    DETAIL: (id) => `/rooms/${id}`,
+    UPDATE: (id) => `/rooms/${id}`,
+    DELETE: (id) => `/rooms/${id}`
+  },
+
+  // Show Times
+  SHOW_TIMES: {
+    LIST: '/show-times',
+    CREATE: '/show-times',
+    DETAIL: (id) => `/show-times/${id}`,
+    UPDATE: (id) => `/show-times/${id}`,
+    DELETE: (id) => `/show-times/${id}`,
+    BY_CINEMA: (cinemaId) => `/show-times/cinema/${cinemaId}`,
+    BY_FILM: (filmId) => `/show-times/film/${filmId}`
+  },
+  
+  // Users
+  USERS: {
+    LIST: '/users',
+    CREATE: '/users',
+    DETAIL: (id) => `/users/${id}`,
+    UPDATE: (id) => `/users/${id}`,
+    DELETE: (id) => `/users/${id}`,
+    PROFILE: '/users/profile'
+  },
+
+  // Comments
+  COMMENTS: {
+    LIST: '/comments',
+    CREATE: '/comments',
+    DETAIL: (id) => `/comments/${id}`,
+    UPDATE: (id) => `/comments/${id}`,
+    DELETE: (id) => `/comments/${id}`,
+    BY_FILM: (filmId) => `/comments/film/${filmId}`
+  },
+
+  // Promotions
+  PROMOTIONS: {
+    LIST: '/promotions',
+    CREATE: '/promotions',
+    DETAIL: (id) => `/promotions/${id}`,
+    UPDATE: (id) => `/promotions/${id}`,
+    DELETE: (id) => `/promotions/${id}`
+  },
+
+  // Orders
+  ORDERS: {
+    LIST: '/orders',
+    CREATE: '/orders',
+    DETAIL: (id) => `/orders/${id}`,
+    UPDATE: (id) => `/orders/${id}`,
+    DELETE: (id) => `/orders/${id}`,
+    MY_ORDERS: '/orders/my-orders'
+  },
+
+  // Upload
+  UPLOAD: {
+    IMAGE: '/upload/image',
+    VIDEO: '/upload/video'
+  }
+};
+```
+
+### src\constants\image.js
+```js
+// src/constants/images.js
+export const DEFAULT_IMAGES = {
+  FILM_POSTER: "https://i.pinimg.com/736x/0b/0a/de/0b0adeec0cb5e9a427a616df27ba04f3.jpg",
+  CINEMA_LOGO: "https://via.placeholder.com/200x200/f0f0f0/999999?text=Cinema+Logo",
+  USER_AVATAR: "https://via.placeholder.com/150x150/e8e8e8/999999?text=User",
+  CATEGORY_IMAGE: "https://via.placeholder.com/300x200/f5f5f5/999999?text=Category",
+  PROMOTION_BANNER: "https://via.placeholder.com/600x300/f0f8ff/999999?text=Promotion",
+  ROOM_IMAGE: "https://via.placeholder.com/400x200/fafafa/999999?text=Room",
+};
+```
+
+### src\constants\index.js
+```js
+// src/constants/index.js - Export tất cả constants
+export { ROLES } from './roles';
+export { API_ENDPOINTS } from './api';
+export { FILM_STATUS, ORDER_STATUS } from './status';
+export { PAGINATION } from './pagination';
+export { DEFAULT_IMAGES } from './image';
+
+// 👈 Bây giờ có thể import 1 lần:
+// import { ROLES, API_ENDPOINTS, FILM_STATUS } from '../constants';
+```
+
+### src\constants\pagination.js
+```js
+export const PAGINATION = {
+  DEFAULT_PAGE: 1,
+  DEFAULT_LIMIT: 10,
+  PAGE_SIZES: [10, 20, 50, 100]
+};
+```
+
+### src\constants\roles.js
+```js
+export const ROLES = {
+  ADMIN: 'admin',
+  USER: 'user'
+};
+```
+
+### src\constants\status.js
+```js
+export const FILM_STATUS = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  COMING_SOON: 'coming_soon'
+};
+
+export const ORDER_STATUS = {
+  PENDING: 'pending',
+  PAID: 'paid',
+  BLOCKED: 'blocked',
+  CANCELLED: 'cancelled',
+  REFUNDED: 'refunded'
+};
+```
+
+### src\helpers\uploadImage.js
+```js
+/**
+ * Upload ảnh lên Cloudinary
+ * @param {File} file - File ảnh từ input
+ * @returns {Promise<string>} - Trả về link ảnh (secure_url)
+ */
+// ✅ Sử dụng environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api/v1";
+
+export const uploadToCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${API_BASE_URL}/upload/image`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+
+  if (data.url) return data.url;
+  throw new Error("Upload failed");
+};
+
+```
+
+### src\hooks\useImageUpload.js
+```js
+import { useState } from 'react';
+import { uploadToCloudinary } from '../helpers/uploadImage';
+
+/**
+ * Custom hook để xử lý upload và preview image
+ * @param {Object} options - Cấu hình cho hook
+ * @param {string} options.defaultImage - URL ảnh mặc định
+ * @param {number} options.maxCount - Số lượng file tối đa (mặc định: 1)
+ * @param {Function} options.onUploadSuccess - Callback khi upload thành công
+ * @param {Function} options.onUploadError - Callback khi upload thất bại
+ * @returns {Object} - Object chứa states và methods
+ */
+const useImageUpload = (options = {}) => {
+  const {
+    defaultImage = "https://i.pinimg.com/736x/0b/0a/de/0b0adeec0cb5e9a427a616df27ba04f3.jpg",
+    maxCount = 1,
+    onUploadSuccess = null,
+    onUploadError = null
+  } = options;
+
+  // States
+  const [fileToUpload, setFileToUpload] = useState(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [hasUserInteraction, setHasUserInteraction] = useState(false);
+
+  // Helper function để convert file sang base64
+  const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  // Xử lý trước khi upload (chỉ lưu file, chưa upload)
+  const beforeUpload = (file) => {
+    setFileToUpload(file);
+    setHasUserInteraction(true);
+    return false; // Ngăn auto upload
+  };
+
+  // Xử lý preview ảnh
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+  };
+
+  // Xử lý thay đổi fileList
+  const handleChange = (info) => {
+    setHasUserInteraction(true);
+    setFileList(info.fileList);
+
+    // Nếu fileList rỗng (đã xóa ảnh)
+    if (info.fileList.length === 0) {
+      setFileToUpload("");
+      setPreviewImage("");
+    }
+    
+    // Nếu có file mới được thêm vào
+    if (info.fileList.length > 0 && info.file?.originFileObj) {
+      setFileToUpload(info.file.originFileObj);
+    }
+  };
+
+  // Upload ảnh lên Cloudinary
+  const uploadImage = async () => {
+    if (!fileToUpload) return null;
+
+    try {
+      setUploading(true);
+      
+      if (fileToUpload === "") {
+        // Ảnh đã bị xóa
+        onUploadSuccess && onUploadSuccess(defaultImage);
+        return defaultImage;
+      }
+
+      // Upload ảnh mới
+      const url = await uploadToCloudinary(fileToUpload);
+      onUploadSuccess && onUploadSuccess(url);
+      return url;
+      
+    } catch (error) {
+      console.error("Upload error:", error);
+      onUploadError && onUploadError(error);
+      return defaultImage;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Set initial values (dùng khi edit) - chỉ set nếu user chưa có tương tác
+  const setInitialImage = (imageUrl) => {
+    if (imageUrl && !hasUserInteraction) {
+      setPreviewImage(imageUrl);
+      const initialFileList = [
+        {
+          uid: "-1",
+          name: "image.jpg",
+          status: "done",
+          url: imageUrl,
+          thumbUrl: imageUrl,
+        },
+      ];
+      setFileList(initialFileList);
+    }
+  };
+
+  // Force set image (bỏ qua user interaction check)
+  const forceSetImage = (imageUrl) => {
+    if (imageUrl) {
+      setPreviewImage(imageUrl);
+      const initialFileList = [
+        {
+          uid: "-1",
+          name: "image.jpg",
+          status: "done",
+          url: imageUrl,
+          thumbUrl: imageUrl,
+        },
+      ];
+      setFileList(initialFileList);
+      setHasUserInteraction(false); // Reset interaction flag
+    }
+  };
+
+  // Clear current image
+  const clearImage = () => {
+    setFileToUpload("");
+    setPreviewImage("");
+    setFileList([]);
+    setPreviewOpen(false);
+    setHasUserInteraction(true);
+  };
+
+  // Reset tất cả states về trạng thái ban đầu
+  const resetAll = () => {
+    setFileToUpload(null);
+    setPreviewImage("");
+    setFileList([]);
+    setPreviewOpen(false);
+    setUploading(false);
+    setHasUserInteraction(false);
+  };
+
+  // Lấy URL cuối cùng để submit form
+  const getFinalImageUrl = async (currentImageUrl = null) => {
+    // Có file mới để upload
+    if (fileToUpload && fileToUpload !== "") {
+      return await uploadImage();
+    }
+    
+    // Ảnh đã bị xóa
+    if (fileToUpload === "") {
+      return defaultImage;
+    }
+    
+    // Giữ nguyên ảnh cũ nếu không có thay đổi
+    if (currentImageUrl && fileToUpload === null) {
+      return currentImageUrl;
+    }
+    
+    // Trường hợp không có ảnh
+    return defaultImage;
+  };
+
+  return {
+    // States
+    fileList,
+    previewOpen,
+    previewImage,
+    uploading,
+    hasUserInteraction,
+    
+    // Handlers cho Antd Upload component
+    beforeUpload,
+    handlePreview,
+    handleChange,
+    
+    // Preview controls
+    setPreviewOpen,
+    
+    // Utility methods
+    uploadImage,
+    setInitialImage,
+    forceSetImage,
+    clearImage,
+    resetAll,
+    getFinalImageUrl,
+    
+    // Upload props cho Antd Upload
+    uploadProps: {
+      maxCount,
+      fileList,
+      onPreview: handlePreview,
+      onChange: handleChange,
+      beforeUpload,
+      listType: "picture-card",
+    }
+  };
+};
+
+export default useImageUpload;
+```
+
+### src\layouts\LayoutAdmin\index.jsx
+```jsx
+import { Button, Layout } from "antd";
+import { useState } from "react";
+import {
+  HomeOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+import { Link, Outlet } from "react-router-dom";
+import MenuSider from "../../components/MenuSider";
+import "./LayoutAdmin.scss"
+const { Sider, Content } = Layout;
+
+function LayoutAdmin() {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <>
+      <Layout className="layout-admin">
+        <header className="header">
+          <div
+            className={
+              "header__logoAdmin " + (collapsed && "header__logoAdmin--collapsed")
+            }
+          >
+            {collapsed ? "MV" : "MV Admin"}
+          </div>
+          <div className="header__nav">
+            <div className="header__nav--left">
+              <div
+                className="header__collapse"
+                onClick={() => setCollapsed(!collapsed)}
+              >
+                {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              </div>
+            </div>
+            <div className="header__nav--right">
+              <Link to="/">
+                <Button icon={<HomeOutlined />} size="large" className="button">
+                  Trang chủ
+                </Button>
+                
+              </Link>
+              <Link to="/auth/logout">
+                <Button
+                  icon={<LogoutOutlined />}
+                  size="large"
+                  className="button"
+                >
+                  Đăng xuất
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </header>
+        <Layout>
+          <Sider className="sider" collapsed={collapsed} width={250} theme="light">
+            <MenuSider  />
+          </Sider>
+          <Content className="content">
+            <Outlet />
+          </Content>
+        </Layout>
+      </Layout>
+    </>
+  );
+}
+
+export default LayoutAdmin;
+
+```
+
+### src\layouts\LayoutUser\index.jsx
+```jsx
+const LayoutUser = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default LayoutUser;
+```
+
+### src\pages\admin\cinemas\CinemaCreatePage.jsx
+```jsx
+const CinemaCreatePage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default CinemaCreatePage;
+```
+
+### src\pages\admin\cinemas\CinemaDetailPage.jsx
+```jsx
+const CinemaDetailPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default CinemaDetailPage;
+```
+
+### src\pages\admin\cinemas\CinemaEditPage.jsx
+```jsx
+const CinemaEditPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default CinemaEditPage;
+```
+
+### src\pages\admin\cinemas\CinemaListPage.jsx
+```jsx
+const CinemaListPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default CinemaListPage;
+```
+
+### src\pages\admin\cinemas\index.js
+```js
+// Gom Export Page Cinema
+export { default as CinemaListPage } from "./CinemaListPage";
+export { default as CinemaDetailPage } from "./CinemaDetailPage";
+export { default as CinemaCreatePage } from "./CinemaCreatePage";
+export { default as CinemaEditPage } from "./CinemaEditPage";
+```
+
+### src\pages\admin\Dashboard\index.jsx
+```jsx
+const DashBoardPage = () => {
+  return (
+    <>
+    DashBoard nè
+      </>
+  );
+};
+
+export default DashBoardPage;
+```
+
+### src\pages\admin\films\FilmCreatePage.jsx
+```jsx
+import { useState } from "react";
+import { message, Spin } from "antd";
+import FilmForm from "../../../components/Form/FilmForm";
+import { createFilm } from "../../../services/filmServices";
+
+function FilmCreatePage() {
+  const [messageApi, contextHolder] = message.useMessage();
+  const [loading, setLoading] = useState(false);
+
+  const handleCreateFilm = async (values) => {
+    setLoading(true);
+    try {
+      const result = await createFilm(values);
+      if (result) {
+        messageApi.open({
+          type: "success",
+          content: "Tạo phim mới thành công",
+          duration: 5,
+        });
+        return true; // Báo thành công cho FilmForm
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "Tạo phim mới không thành công",
+          duration: 5,
+        });
+        return false; // Báo lỗi nhưng không reset form
+      }
+    } catch (err) {
+      messageApi.open({
+        type: "error",
+        content: err.response?.data?.message || "Không thể tạo phim",
+      });
+      return false; // Báo lỗi nhưng không reset form
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    console.log("Cancel clicked");
+  };
+
+  return (
+    <>
+      {contextHolder}
+      <Spin
+        spinning={loading}
+         
+        tip={
+          <>
+            <h2>Đang tiến hành lưu phim</h2>
+          </>
+        }
+        size="large"
+      >
+        <h1>Tạo Phim Mới</h1>
+        <FilmForm
+          onFinish={handleCreateFilm}
+          onCancel={handleCancel}
+          submitButtonText="Tạo phim"
+        />
+      </Spin>
+    </>
+  );
+}
+
+export default FilmCreatePage;
+```
+
+### src\pages\admin\films\FilmDetailPage.jsx
+```jsx
+import { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Card,
+  Row,
+  Col,
+  Typography,
+  Tag,
+  Space,
+  Button,
+  Image,
+  Descriptions,
+  Divider,
+  message,
+  
+} from "antd";
+import {
+  EditOutlined,
+  ArrowLeftOutlined,
+  CalendarOutlined,
+  ClockCircleOutlined,
+  TeamOutlined,
+  UserOutlined,
+  GlobalOutlined,
+  CrownOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
+import dayjs from "dayjs";
+import { getFilmById } from "../../../services/filmServices";
+import Loading from "../../../components/Loading";
+import ErrorDisplay from "../../../components/ErrorDisplay";
+
+const { Title, Text, Paragraph } = Typography;
+
+const FilmDetailPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [filmData, setFilmData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Helper function to extract YouTube video ID from URL
+  const getYouTubeVideoId = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  // Convert YouTube URL to embed URL
+  const getYouTubeEmbedUrl = (url) => {
+    const videoId = getYouTubeVideoId(url);
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+  };
+
+  // Fetch film data
+const fetchFilmData = useCallback(async () => {
+  try {
+    setLoading(true);
+    setError(null);
+    const result = await getFilmById(id);
+    setFilmData(result.data);
+    console.log("Film data:", result.data);
+  } catch (err) {
+    console.error("Error fetching film:", err);
+    setError(err.response?.data?.message || "Không thể tải thông tin phim");
+    messageApi.error("Không thể tải thông tin phim");
+  } finally {
+    setLoading(false);
+  }
+}, [id, messageApi]); // Xác định các phụ thuộc của hook useCallback
+
+useEffect(() => {
+  if (id) {
+    fetchFilmData();
+  } else {
+    setError("Không tìm thấy ID phim");
+    setLoading(false);
+  }
+}, [fetchFilmData, id]);
+
+  const handleEdit = () => {
+    navigate(`/admin/films/edit/${id}`);
+  };
+
+  const handleBack = () => {
+    navigate("/admin/films");
+  };
+
+  const handleRetry = () => {
+    fetchFilmData();
+  };
+
+  // Render status tag
+  const renderStatusTag = (status) => {
+    const statusConfig = {
+      active: { color: "green", text: "Hoạt động" },
+      inactive: { color: "red", text: "Ngưng hoạt động" },
+      coming_soon: { color: "blue", text: "Sắp chiếu" },
+    };
+    const config = statusConfig[status] || statusConfig.inactive;
+    return <Tag color={config.color}>{config.text}</Tag>;
+  };
+
+  // Render age rating tag
+  const renderAgeRatingTag = (ageRating) => {
+    const ageConfig = {
+      P: { color: "green", text: "P - Mọi lứa tuổi" },
+      K: { color: "blue", text: "K - Dưới 13 tuổi" },
+      T13: { color: "orange", text: "T13 - Từ 13 tuổi" },
+      T16: { color: "red", text: "T16 - Từ 16 tuổi" },
+      T18: { color: "volcano", text: "T18 - Từ 18 tuổi" },
+      C: { color: "black", text: "C - Cấm chiếu" },
+    };
+    const config = ageConfig[ageRating] || ageConfig.P;
+    return <Tag color={config.color}>{config.text}</Tag>;
+  };
+
+  if (loading) return <Loading tip="Đang tải thông tin phim..." />;
+
+  if (error) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <ErrorDisplay message={error} onRetry={handleRetry} />
+      </div>
+    );
+  }
+
+  if (!filmData) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <ErrorDisplay message="Không tìm thấy thông tin phim" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {contextHolder}
+      <div style={{ padding: "24px", backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
+        {/* Header với nút điều hướng */}
+        <div style={{ marginBottom: "24px" }}>
+          <Space size="middle">
+            <Button
+              icon={<ArrowLeftOutlined />}
+              onClick={handleBack}
+              size="large"
+            >
+              Quay lại danh sách
+            </Button>
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={handleEdit}
+              size="large"
+            >
+              Chỉnh sửa phim
+            </Button>
+          </Space>
+        </div>
+
+        <Row gutter={[24, 24]}>
+          {/* Cột trái - Poster và thông tin cơ bản */}
+          <Col xs={24} md={8}>
+            <Card>
+              <div style={{ textAlign: "center" }}>
+                <Image
+                  src={filmData.thumbnail}
+                  alt={filmData.title}
+                  style={{
+                    width: "100%",
+                    maxWidth: "350px",
+                    borderRadius: "8px",
+                  }}
+                  preview={{
+                    mask: <div>Xem ảnh lớn</div>,
+                  }}
+                />
+                
+                <Title level={3} style={{ marginTop: "16px", marginBottom: "8px" }}>
+                  {filmData.title}
+                </Title>
+
+                <Space direction="vertical" size="small" style={{ width: "100%" }}>
+                  {filmData.otherTitles && filmData.otherTitles.length > 0 && (
+                    <Text type="secondary" italic>
+                      {filmData.otherTitles.join(" • ")}
+                    </Text>
+                  )}
+                  
+                  <Space wrap>
+                    {renderStatusTag(filmData.status)}
+                    {filmData.isTrending && (
+                      <Tag color="gold" icon={<CrownOutlined />}>
+                        Thịnh hành
+                      </Tag>
+                    )}
+                  </Space>
+                </Space>
+              </div>
+            </Card>
+
+            {/* Thông tin nhanh */}
+            <Card title="Thông tin nhanh" style={{ marginTop: "16px" }}>
+              <Descriptions column={1} size="small">
+                <Descriptions.Item
+                  label={<><CalendarOutlined /> Ngày phát hành</>}
+                >
+                  {dayjs(filmData.releaseDate).format("DD/MM/YYYY")}
+                </Descriptions.Item>
+                
+                <Descriptions.Item
+                  label={<><ClockCircleOutlined /> Thời lượng</>}
+                >
+                  {filmData.duration} phút
+                </Descriptions.Item>
+                
+                <Descriptions.Item
+                  label={<><GlobalOutlined /> Ngôn ngữ</>}
+                >
+                  {filmData.filmLanguage}
+                </Descriptions.Item>
+                
+                {filmData.subtitles && (
+                  <Descriptions.Item label="Phụ đề">
+                    {filmData.subtitles}
+                  </Descriptions.Item>
+                )}
+                
+                <Descriptions.Item label="Độ tuổi phù hợp">
+                  {renderAgeRatingTag(filmData.ageRating)}
+                </Descriptions.Item>
+              </Descriptions>
+            </Card>
+          </Col>
+
+          {/* Cột phải - Thông tin chi tiết */}
+          <Col xs={24} md={16}>
+            {/* Trailer */}
+            {filmData.trailer && (
+              <Card
+                title={
+                  <Space>
+                    <PlayCircleOutlined />
+                    Trailer
+                  </Space>
+                }
+                style={{ marginBottom: "24px" }}
+              >
+                <div 
+                  style={{ 
+                    position: "relative", 
+                    paddingTop: "56.25%", 
+                    overflow: "hidden",
+                    borderRadius: "8px"
+                  }}
+                >
+                  {getYouTubeEmbedUrl(filmData.trailer) ? (
+                    <iframe
+                      src={getYouTubeEmbedUrl(filmData.trailer)}
+                      title={`${filmData.title} - Trailer`}
+                      width="100%"
+                      height="100%"
+                      style={{ 
+                        position: "absolute", 
+                        top: 0, 
+                        left: 0,
+                        border: "none"
+                      }}
+                      allowFullScreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    />
+                  ) : (
+                    <div 
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        textAlign: "center"
+                      }}
+                    >
+                      <Text type="secondary">Không thể tải trailer</Text>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            )}
+
+            {/* Thông tin chi tiết */}
+            <Card title="Thông tin chi tiết">
+              <Row gutter={[16, 16]}>
+                {/* Mô tả phim */}
+                <Col span={24}>
+                  <div>
+                    <Title level={5}>Mô tả phim</Title>
+                    <Paragraph>{filmData.description}</Paragraph>
+                  </div>
+                </Col>
+
+                <Col span={24}>
+                  <Divider />
+                </Col>
+
+                {/* Diễn viên */}
+                {filmData.actors && filmData.actors.length > 0 && (
+                  <Col xs={24} md={12}>
+                    <div>
+                      <Title level={5}>
+                        <TeamOutlined /> Diễn viên
+                      </Title>
+                      <Space wrap>
+                        {filmData.actors.map((actor, index) => (
+                          <Tag key={index} color="blue">
+                            {actor}
+                          </Tag>
+                        ))}
+                      </Space>
+                    </div>
+                  </Col>
+                )}
+
+                {/* Đạo diễn */}
+                {filmData.directors && filmData.directors.length > 0 && (
+                  <Col xs={24} md={12}>
+                    <div>
+                      <Title level={5}>
+                        <UserOutlined /> Đạo diễn
+                      </Title>
+                      <Space wrap>
+                        {filmData.directors.map((director, index) => (
+                          <Tag key={index} color="green">
+                            {director}
+                          </Tag>
+                        ))}
+                      </Space>
+                    </div>
+                  </Col>
+                )}
+
+                {/* Định dạng chiếu */}
+                {filmData.availableFormats && filmData.availableFormats.length > 0 && (
+                  <Col xs={24} md={12}>
+                    <div>
+                      <Title level={5}>Định dạng chiếu</Title>
+                      <Space wrap>
+                        {filmData.availableFormats.map((format, index) => (
+                          <Tag key={index} color="purple">
+                            {format}
+                          </Tag>
+                        ))}
+                      </Space>
+                    </div>
+                  </Col>
+                )}
+
+                <Col span={24}>
+                  <Divider />
+                </Col>
+
+                {/* Thông tin hệ thống */}
+                <Col span={24}>
+                  <Title level={5}>Thông tin hệ thống</Title>
+                  <Descriptions column={2} size="small">
+                    <Descriptions.Item label="Ngày tạo">
+                      {dayjs(filmData.createdAt).format("DD/MM/YYYY HH:mm")}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Cập nhật lần cuối">
+                      {dayjs(filmData.updatedAt).format("DD/MM/YYYY HH:mm")}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Slug">
+                      <Text code>{filmData.slug}</Text>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="ID">
+                      <Text code>{filmData._id}</Text>
+                    </Descriptions.Item>
+                  </Descriptions>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    </>
+  );
+};
+
+export default FilmDetailPage;
+```
+
+### src\pages\admin\films\FilmEditPage.jsx
+```jsx
+import { useState, useEffect } from "react";
+import { message, Spin } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
+import FilmForm from "../../../components/Form/FilmForm";
+import { getFilmById, updateFilm } from "../../../services/filmServices";
+import ErrorDisplay from "../../../components/ErrorDisplay";
+
+function FilmEditPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [filmData, setFilmData] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Fetch film data khi component mount
+  useEffect(() => {
+    const fetchFilmData = async () => {
+      try {
+        setFetching(true);
+        setError(null);
+        const result = await getFilmById(id);
+        const dataFilm = result.data;
+        setFilmData(dataFilm);
+        console.log('result', result);
+      } catch (err) {
+        console.error("Error fetching film:", err);
+        setError(err.response?.data?.message || "Không thể tải thông tin phim");
+      } finally {
+        setFetching(false);
+      }
+    };
+
+    if (id) {
+      fetchFilmData();
+    } else {
+      setError("Không tìm thấy ID phim");
+      setFetching(false);
+    }
+  }, [id]);
+
+  const handleUpdateFilm = async (values) => {
+    setLoading(true);
+    try {
+      const result = await updateFilm(id, values);
+      if (result) {
+        messageApi.open({
+          type: "success",
+          content: "Cập nhật phim thành công",
+          duration: 5,
+        });
+        
+        // Redirect về danh sách sau khi update thành công
+        setTimeout(() => {
+          navigate("/admin/films");
+        }, 1500);
+        
+        return true; // Báo thành công cho FilmForm
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "Cập nhật phim không thành công",
+          duration: 5,
+        });
+        return false;
+      }
+    } catch (err) {
+      console.error("Update film error:", err);
+      messageApi.open({
+        type: "error",
+        content: err.response?.data?.message || "Không thể cập nhật phim",
+        duration: 5,
+      });
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/admin/films");
+  };
+
+  const handleRetry = () => {
+    window.location.reload();
+  };
+
+  // Hiển thị loading khi đang fetch data
+  if (fetching) {
+    return (
+      <div style={{ padding: '20px' }}>
+        <h1>Chỉnh sửa phim</h1>
+        <Spin
+          size="large"
+          tip="Đang tải thông tin phim..."
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '400px'
+          }}
+        >
+          <div style={{ minHeight: 400, minWidth: 400 }} />
+        </Spin>
+      </div>
+    );
+  }
+
+  // Hiển thị lỗi nếu không tải được data
+  if (error) {
+    return (
+      <div style={{ padding: '20px' }}>
+        <h1>Chỉnh sửa phim</h1>
+        <ErrorDisplay 
+          message={error}
+          onRetry={handleRetry}
+        />
+      </div>
+    );
+  }
+
+  // Hiển thị form khi đã có data
+  return (
+    <>
+      {contextHolder}
+      <div style={{ padding: '20px' }}>
+        <Spin
+          spinning={loading}
+          tip={
+            <>
+              <h2>Đang tiến hành cập nhật phim</h2>
+            </>
+          }
+          size="large"
+        >
+          <h1>Chỉnh sửa phim: {filmData?.title}</h1>
+          <FilmForm
+            onFinish={handleUpdateFilm}
+            onCancel={handleCancel}
+            initialValues={filmData}
+            submitButtonText="Cập nhật phim"
+          />
+        </Spin>
+      </div>
+    </>
+  );
+}
+
+export default FilmEditPage;
+```
+
+### src\pages\admin\films\FilmListPage.jsx
+```jsx
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+
+import { Link } from 'react-router-dom';
+import FilmAdminList from '../../../components/FIlmAdminList';
+const FilmListPage = () => {
+  return (
+    <>
+      <Link  to="/admin/films/create">
+        <Button className='mb-20' variant="outlined" color='primary' icon={<PlusOutlined />}>Tạo phim mới</Button>
+      </Link>
+      <FilmAdminList />
+    </>
+  );
+};
+
+export default FilmListPage;
+```
+
+### src\pages\admin\films\index.js
+```js
+// Gom Export
+export { default as FilmListPage } from "./FilmListPage";
+export { default as FilmDetailPage } from "./FilmDetailPage";
+export { default as FilmCreatePage } from "./FilmCreatePage";
+export { default as FilmEditPage } from "./FilmEditPage";
+```
+
+### src\pages\admin\Login\index.jsx
+```jsx
+// src/pages/admin/Login/index.jsx
+import React, { useState } from "react";
+import { Form, Input, Button, Typography, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../../services/authServices";
+import { fetchUser } from "../../../redux/actions/auth.action";
+import "./Login.scss";
+
+const { Title, Text } = Typography;
+
+const LoginAdmin = () => {
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
+  const handleLogin = async (values) => {
+    try {
+      setLoading(true);
+      // Gọi API login
+      await login({
+        identifier: values.identifier,
+        password: values.password,
+      });
+
+      messageApi.open({
+        type: "success",
+        content: "Đăng nhập thành công",
+        duration: 2,
+      });
+      // Lấy thông tin user sau khi login
+      await dispatch(fetchUser());
+
+      // Redirect tới dashboard
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 1000);
+    } catch (err) {
+      console.error("Login error:", err);
+      messageApi.open({
+        type: "error",
+        content: err.response?.data?.message || "Không thể lấy thông tin",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLoginFailed = (errorInfo) => {
+    console.log("Login validation failed:", errorInfo);
+    message.error("Vui lòng kiểm tra lại thông tin đăng nhập!");
+  };
+
+  return (
+    <>
+      {contextHolder}
+      <div className="login-admin">
+        <div className="login-admin__container">
+          <div className="login-admin__header">
+            <div className="login-admin__logo">
+              <div className="login-admin__logo-icon">MV</div>
+            </div>
+            <Title level={2} className="login-admin__title">
+              Admin Portal
+            </Title>
+            <Text className="login-admin__subtitle">
+              Đăng nhập để quản trị hệ thống
+            </Text>
+          </div>
+
+          <Form
+            form={form}
+            name="loginAdmin"
+            className="login-admin__form"
+            onFinish={handleLogin}
+            onFinishFailed={handleLoginFailed}
+            layout="vertical"
+            requiredMark={false}
+          >
+            <Form.Item
+              name="identifier"
+              label="Tên đăng nhập / Email"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập tên đăng nhập hoặc email!",
+                },
+                {
+                  min: 4,
+                  message: "Tên đăng nhập phải có ít nhất 4 ký tự!",
+                },
+              ]}
+            >
+              <Input
+                prefix={<UserOutlined />}
+                placeholder="Nhập tên đăng nhập hoặc email"
+                size="large"
+                className="login-admin__input"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              label="Mật khẩu"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập mật khẩu!",
+                },
+                {
+                  min: 8,
+                  message: "Mật khẩu phải có ít nhất 8 ký tự!",
+                },
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Nhập mật khẩu"
+                size="large"
+                className="login-admin__input"
+              />
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                loading={loading}
+                className="login-admin__button"
+                block
+              >
+                Đăng nhập
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <div className="login-admin__footer">
+            <Text type="secondary">
+              © 2024 Movie Admin System. All rights reserved.
+            </Text>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default LoginAdmin;
+
+```
+
+### src\pages\common\LogoutPage.jsx
+```jsx
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../services/authServices";
+import { fetchUser } from "../../redux/actions/auth.action";
+
+function LogoutPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  useEffect(() => {
+    const fetchLogout = async () => {
+      try {
+        await logout();
+        
+        dispatch(fetchUser());
+        navigate("/");
+      } catch (err) {
+        alert(err.response?.data?.message || "Không thể lấy thông tin");
+      }
+    };
+    fetchLogout();
+  }, [isAuthenticated]);
+  return <></>;
+}
+
+export default LogoutPage;
+
+```
+
+### src\pages\common\NotFound.jsx
+```jsx
+// src/pages/common/NotFound.jsx (404 Page)
+import React from 'react';
+import { Result, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+
+const NotFound = () => {
+  return (
+    <div style={{ 
+      height: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      backgroundColor: '#f5f5f5'
+    }}>
+      <Result
+        status="404"
+        title="404"
+        subTitle="Xin lỗi, trang bạn tìm kiếm không tồn tại."
+        extra={[
+          <Button type="primary" key="home" icon={<HomeOutlined />}>
+            <Link to="/">Về trang chủ</Link>
+          </Button>,
+          <Button key="back" icon={<ArrowLeftOutlined />} onClick={() => window.history.back()}>
+            Quay lại
+          </Button>
+        ]}
+      />
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+### src\pages\common\Unauthorized.jsx
+```jsx
+// src/pages/common/Unauthorized.jsx (403 Page)
+import React from 'react';
+import { Result, Button } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { HomeOutlined, LoginOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+
+const Unauthorized = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  // Nút action khác nhau tùy trạng thái user
+  const getExtraButtons = () => {
+    if (!isAuthenticated) {
+      // Chưa đăng nhập
+      return [
+        <Button type="primary" key="login" icon={<LoginOutlined />}>
+          <Link to="/admin/auth/login">Đăng nhập</Link>
+        </Button>,
+        <Button key="home" icon={<HomeOutlined />}>
+          <Link to="/">Về trang chủ</Link>
+        </Button>
+      ];
+    }
+
+    // Đã đăng nhập nhưng không đủ quyền
+    const homeRoute = user?.role === 'admin' ? '/admin/dashboard' : '/';
+    
+    return [
+      <Button type="primary" key="home" icon={<HomeOutlined />}>
+        <Link to={homeRoute}>Về trang chính</Link>
+      </Button>,
+      <Button key="back" icon={<ArrowLeftOutlined />} onClick={() => navigate(-1)}>
+        Quay lại
+      </Button>
+    ];
+  };
+
+  return (
+    <div style={{ 
+      height: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      backgroundColor: '#f5f5f5'
+    }}>
+      <Result
+        status="403"
+        title="403"
+        subTitle={
+          !isAuthenticated 
+            ? "Bạn cần đăng nhập để truy cập trang này." 
+            : "Xin lỗi, bạn không có quyền truy cập trang này."
+        }
+        extra={getExtraButtons()}
+      />
+    </div>
+  );
+};
+
+export default Unauthorized;
+```
+
+### src\redux\actions\auth.action.js
+```js
+// src/redux/actions/auth.action.js
+import { checkLogin } from "../../services/authServices";
+
+// Action types
+export const SET_USER = "SET_USER";
+export const LOGOUT = "LOGOUT";
+export const AUTH_LOADING = "AUTH_LOADING";
+export const AUTH_ERROR = "AUTH_ERROR";
+
+// Thunk Action: gọi API và lưu user vào store
+export const fetchUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: AUTH_LOADING }); // 👈 bắt đầu loading
+    
+    const check = await checkLogin();
+    dispatch({ type: SET_USER, payload: check.user });
+  } catch (error) {
+    console.error("Lỗi lấy user:", error.response?.data || error.message);
+    
+    // 👈 dispatch lỗi thay vì chỉ logout
+    dispatch({ 
+      type: AUTH_ERROR, 
+      payload: error.response?.data?.message || "Không thể xác thực người dùng" 
+    });
+    
+    dispatch({ type: LOGOUT }); // Token sai, hết hạn => logout
+  }
+};
+```
+
+### src\redux\reducers\auth.reducer.js
+```js
+// src/redux/reducers/auth.reducer.js
+import { ROLES } from "../../constants";
+import { SET_USER, LOGOUT } from "../actions/auth.action";
+
+const initialState = {
+  user: null,
+  isAuthenticated: false,
+  loading: false,    // 👈 trạng thái đang tải
+  error: null,       // 👈 lưu lỗi nếu có
+};
+
+const authReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "AUTH_LOADING":
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        loading: false,    // 👈 tắt loading
+        error: null,
+      };
+    
+    case LOGOUT:
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        loading: false,
+        error: null,
+      };
+    
+    case "AUTH_ERROR":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload, // 👈 lưu thông báo lỗi
+      };
+    
+    default:
+      return state;
+  }
+};
+//  Helper function để check role
+export const isAdmin = (user) => user?.role === ROLES.ADMIN;
+export const isUser = (user) => user?.role === ROLES.USER;
+
+export default authReducer;
+```
+
+### src\redux\reducers\index.js
+```js
+import { combineReducers } from "redux"
+import authReducer from "./auth.reducer";
+
+
+
+
+const allReducers = combineReducers({
+    auth: authReducer,
+    //Thêm nhiều reducer ở đây
+});
+
+export default allReducers;
+```
+
+### src\routes\adminRoutes.js
+```js
+// src/routes/adminRoutes.js
+import { lazy, Suspense } from "react";
+import LayoutAdmin from "../layouts/LayoutAdmin";
+import PrivateRoutes from "./PrivateRoutes";
+import Loading from "../components/Loading";
+
+// 👈 Lazy load các component
+const DashBoardPage = lazy(() => import("../pages/admin/Dashboard"));
+const FilmListPage = lazy(() => import("../pages/admin/films/FilmListPage"));
+const FilmCreatePage = lazy(() => import("../pages/admin/films/FilmCreatePage"));
+const FilmEditPage = lazy(() => import("../pages/admin/films/FilmEditPage"));
+const FilmDetailPage = lazy(() => import("../pages/admin/films/FilmDetailPage"));
+const CinemaListPage = lazy(() => import("../pages/admin/cinemas/CinemaListPage"));
+const CinemaCreatePage = lazy(() => import("../pages/admin/cinemas/CinemaCreatePage"));
+const CinemaEditPage = lazy(() => import("../pages/admin/cinemas/CinemaEditPage"));
+
+// 👈 Wrapper component với Suspense
+const LazyWrapper = ({ children }) => (
+  <Suspense fallback={<Loading tip="Đang tải trang..." />}>
+    {children}
+  </Suspense>
+);
+
+const adminRoutes = [
+  {
+    element: <PrivateRoutes allowedRoles={["admin"]} redirectPath="/admin/auth/login" />,
+    children: [
+      {
+        path: "/admin",
+        element: <LayoutAdmin />,
+        children: [
+          { 
+            index: true, 
+            element: <LazyWrapper><DashBoardPage /></LazyWrapper> 
+          },
+          { 
+            path: "dashboard", 
+            element: <LazyWrapper><DashBoardPage /></LazyWrapper> 
+          },
+
+          // Films
+          { 
+            path: "films", 
+            element: <LazyWrapper><FilmListPage /></LazyWrapper> 
+          },
+          { 
+            path: "films/:id", 
+            element: <LazyWrapper><FilmDetailPage /></LazyWrapper> 
+          },
+          { 
+            path: "films/create", 
+            element: <LazyWrapper><FilmCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "films/edit/:id", 
+            element: <LazyWrapper><FilmEditPage /></LazyWrapper> 
+          },
+
+          // Cinemas
+          { 
+            path: "cinemas", 
+            element: <LazyWrapper><CinemaListPage /></LazyWrapper> 
+          },
+          { 
+            path: "cinemas/create", 
+            element: <LazyWrapper><CinemaCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "cinemas/edit/:id", 
+            element: <LazyWrapper><CinemaEditPage /></LazyWrapper> 
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export default adminRoutes;
+```
+
+### src\routes\AllRoutes.jsx
+```jsx
+import { useRoutes } from "react-router-dom";
+import routes from "./index";
+
+const  AllRoutes = () => {
+  return useRoutes(routes);
+}
+
+export default AllRoutes;
+
+```
+
+### src\routes\commonRoutes.js
+```js
+import LayoutUser from "../layouts/LayoutUser";
+import LoginAdmin from "../pages/admin/Login";
+import LogoutPage from "../pages/common/LogoutPage";
+import NotFound from "../pages/common/NotFound";
+import Unauthorized from "../pages/common/Unauthorized";
+
+
+const commonRoutes = [
+  {
+    path: "/",
+    element: <LayoutUser />,
+    children: [
+      // { index: true, element: <HomePage /> },
+      // { path: "auth/login", element: <LoginPage /> },
+      // { path: "auth/register", element: <RegisterPage /> },
+       
+      // { path: "search", element: <SearchPage /> },
+      // { path: "films/:id", element: <FilmDetailPage /> },
+    ],
+  },
+  {
+    path: "/admin",
+    children: [
+      {
+        path: "auth/login",
+        element: <LoginAdmin />
+      }
+    ]
+  },
+   // 👈 Error pages - không cần layout
+  {
+    path: "/unauthorized",
+    element: <Unauthorized />  // 403 Forbidden
+  },
+  {
+    path: "/404",
+    element: <NotFound />      // 404 Not Found
+  },
+  // 👈 Catch-all route - phải đặt cuối cùng
+  {
+    path: "*",
+    element: <NotFound />      // Bất kỳ route nào không match sẽ hiển thị 404
+  },
+  
+    { path: "auth/logout", element: <LogoutPage /> },
+  
+];
+
+export default commonRoutes;
+
+```
+
+### src\routes\index.js
+```js
+import commonRoutes from "./commonRoutes";
+import userRoutes from "./userRoutes";
+import adminRoutes from "./adminRoutes";
+
+const routes = [
+  ...commonRoutes,
+  ...userRoutes,
+  ...adminRoutes,
+];
+
+export default routes;
+
+
+
+
+
+```
+
+### src\routes\PrivateRoutes.jsx
+```jsx
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
+
+/**
+ * PrivateRoutes
+ * @param {Array} allowedRoles - danh sách role được phép (["admin"], ["user"], ["admin","user"])
+ * @param {String} redirectPath - đường dẫn nếu chưa đăng nhập (mặc định: "/auth/login")
+ */
+const  PrivateRoutes = ({ allowedRoles = [], redirectPath = "/auth/login" }) => {
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const role = user?.role || "";
+  // Chưa đăng nhập
+  if (!isAuthenticated) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  // Không đúng role
+  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // Pass → cho phép vào các route con
+  return <Outlet />;
+}
+
+export default PrivateRoutes;
+
+```
+
+### src\routes\userRoutes.js
+```js
+import LayoutUser from "../layouts/LayoutUser";
+import PrivateRoutes from "./PrivateRoutes";
+
+
+const userRoutes = [
+  {
+    element: <PrivateRoutes allowedRoles={["user"]} redirectPath="/auth/login" />,
+    children: [
+      {
+        element: <LayoutUser />,
+        children: [
+          // { path: "profile", element: <ProfilePage /> },
+          // { path: "my-tickets", element: <MyTicketsPage /> },
+          // { path: "payment", element: <PaymentPage /> },
+          // { path: "carts", element: <CartPage /> },
+        ],
+      },
+    ],
+  },
+];
+
+export default userRoutes;
+
+```
+
+### src\services\authServices.js
+```js
+import { API_ENDPOINTS } from "../constants";
+import { get, post } from "../utils";
+
+// -- Đăng ký
+export const register = (userData) =>
+  post(API_ENDPOINTS.AUTH.REGISTER, userData);
+
+// -- Đăng nhập
+export const login = (userData) => post(API_ENDPOINTS.AUTH.LOGIN, userData);
+
+// -- Đăng Xuất
+export const logout = () => post(API_ENDPOINTS.AUTH.LOGOUT);
+
+// -- Kiểm tra Login
+export const checkLogin = () => get(API_ENDPOINTS.AUTH.ME);
+
+```
+
+### src\services\categoryServices.js
+```js
+import { API_ENDPOINTS } from "../constants";
+import { get } from "../utils";
+
+export const getCategories = () => get(API_ENDPOINTS.CATEGORIES.LIST);
+```
+
+### src\services\cinemaServices.js
+```js
+
+```
+
+### src\services\filmServices.js
+```js
+import { API_ENDPOINTS } from "../constants";
+import { del, get, patch, post } from "../utils";
+
+export const createFilm = (data) => post(API_ENDPOINTS.FILMS.CREATE, data);
+
+// Get all films
+export const getAllFilms = () => get(API_ENDPOINTS.FILMS.LIST);
+
+//get single film by id
+export const getFilmById = (id) => get(API_ENDPOINTS.FILMS.DETAIL_BY_ID(id));
+
+// Get single film by slug
+export const getFilmBySlug = (slug) =>
+  get(API_ENDPOINTS.FILMS.DETAIL_BY_SLUG(slug));
+
+// Update existing film
+export const updateFilm = (id, data) =>
+  patch(API_ENDPOINTS.FILMS.UPDATE(id), data);
+
+// Delete film
+export const deleteFilm = (id) => del(API_ENDPOINTS.FILMS.DELETE(id));
+
+// Update film status (active/inactive)
+export const updateFilmStatus = (id, status) =>
+  patch(API_ENDPOINTS.FILMS.UPDATE(id), { status });
+
+// Update film trending status
+export const updateFilmTrending = (id, isTrending) =>
+  patch(API_ENDPOINTS.FILMS.UPDATE(id), { isTrending });
+
+```
+
+### src\services\userServices.js
+```js
+
+```
+
+### src\utils\axiosClient.js
+```js
+// services/axiosClient.js
+import axios from "axios";
+// ✅ Sử dụng environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api/v1";
+
+const axiosClient = axios.create({
+  baseURL: API_BASE_URL, // 👈 thay đổi tùy môi trường
+  withCredentials: true,           // 👈 để gửi/nhận cookie HttpOnly
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// ✅ Interceptors (tùy chọn): thêm token hoặc xử lý lỗi chung
+axiosClient.interceptors.request.use(
+  (config) => {
+    // Nếu dùng localStorage token thì thêm ở đây (cách 1 - header)
+    // const token = localStorage.getItem("token");
+    // if (token) config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+axiosClient.interceptors.response.use(
+  (response) => response.data, // chỉ lấy `data` cho gọn
+  (error) => {
+    console.error("API error:", error.response);
+    return Promise.reject(error);
+  }
+);
+
+export default axiosClient;
+
+```
+
+### src\utils\index.js
+```js
+import axiosClient from "./axiosClient";
+
+export const get = (url, config) => axiosClient.get(url, config);
+
+export const post = (url, data, config) => axiosClient.post(url, data, config);
+
+export const patch = (url, data, config) => axiosClient.patch(url, data, config);
+
+export const del = (url, config) => axiosClient.delete(url, config);
+
+```
