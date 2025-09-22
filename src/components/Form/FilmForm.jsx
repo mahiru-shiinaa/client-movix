@@ -17,6 +17,7 @@ import { useEffect, useState, useRef } from "react";
 import { getCategories } from "../../services/categoryServices";
 import useImageUpload from "../../hooks/useImageUpload";
 import dayjs from "dayjs";
+import { DEFAULT_IMAGES } from "../../constants";
 
 const { TextArea } = Input;
 
@@ -42,7 +43,7 @@ function FilmForm({
     resetAll,
     uploadProps,
   } = useImageUpload({
-    defaultImage: "https://i.pinimg.com/736x/0b/0a/de/0b0adeec0cb5e9a427a616df27ba04f3.jpg",
+    defaultImage: DEFAULT_IMAGES.FILM_POSTER,
     maxCount: 1,
     onUploadSuccess: (url) => console.log("Upload thành công:", url),
     onUploadError: (error) => console.error("Upload lỗi:", error),

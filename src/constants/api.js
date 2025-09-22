@@ -102,5 +102,12 @@ export const API_ENDPOINTS = {
   UPLOAD: {
     IMAGE: '/upload/image',
     VIDEO: '/upload/video'
+  },
+  CITIES: {
+    LIST: '/cities',
+    CREATE: '/cities',
+    DETAIL: (id) => `/cities/${id}`,
+    UPDATE: (id) => `/cities/${id}`,
+    DELETE: (id) => `/cities/${id}`
   }
 };

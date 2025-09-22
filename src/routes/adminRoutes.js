@@ -11,6 +11,7 @@ const FilmCreatePage = lazy(() => import("../pages/admin/films/FilmCreatePage"))
 const FilmEditPage = lazy(() => import("../pages/admin/films/FilmEditPage"));
 const FilmDetailPage = lazy(() => import("../pages/admin/films/FilmDetailPage"));
 const CinemaListPage = lazy(() => import("../pages/admin/cinemas/CinemaListPage"));
+const CinemaDetailPage = lazy(() => import("../pages/admin/cinemas/CinemaDetailPage"));
 const CinemaCreatePage = lazy(() => import("../pages/admin/cinemas/CinemaCreatePage"));
 const CinemaEditPage = lazy(() => import("../pages/admin/cinemas/CinemaEditPage"));
 
@@ -60,6 +61,10 @@ const adminRoutes = [
           { 
             path: "cinemas", 
             element: <LazyWrapper><CinemaListPage /></LazyWrapper> 
+          },
+          { 
+            path: "cinemas/:id", 
+            element: <LazyWrapper><CinemaDetailPage /></LazyWrapper> 
           },
           { 
             path: "cinemas/create", 
