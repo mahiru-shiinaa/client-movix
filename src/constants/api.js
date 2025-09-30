@@ -52,7 +52,8 @@ export const API_ENDPOINTS = {
   SHOW_TIMES: {
     LIST: '/show-times',
     CREATE: '/show-times',
-    DETAIL: (id) => `/show-times/${id}`,
+    DETAIL_BY_ID: (id) => `/show-times/${id}`,
+    DETAIL_BY_SLUG: (slug) => `/show-times/slug/${slug}`,
     UPDATE: (id) => `/show-times/${id}`,
     DELETE: (id) => `/show-times/${id}`,
     BY_CINEMA: (cinemaId) => `/show-times/cinema/${cinemaId}`,

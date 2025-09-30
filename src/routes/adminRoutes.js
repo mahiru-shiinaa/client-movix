@@ -14,8 +14,16 @@ const CinemaListPage = lazy(() => import("../pages/admin/cinemas/CinemaListPage"
 const CinemaDetailPage = lazy(() => import("../pages/admin/cinemas/CinemaDetailPage"));
 const CinemaCreatePage = lazy(() => import("../pages/admin/cinemas/CinemaCreatePage"));
 const CinemaEditPage = lazy(() => import("../pages/admin/cinemas/CinemaEditPage"));
+const RoomCreatePage = lazy(() => import("../pages/admin/rooms/RoomCreatePage"));
+const RoomEditPage = lazy(() => import("../pages/admin/rooms/RoomEditPage"));
+const RoomDetailPage = lazy(() => import("../pages/admin/rooms/RoomDetailPage"));
+const RoomListPage = lazy(() => import("../pages/admin/rooms/RoomListPage"));
+const ShowTimeListPage = lazy(() => import("../pages/admin/showtimes/ShowTimeListPage"));
+const ShowTimeCreatePage = lazy(() => import("../pages/admin/showtimes/ShowTimeCreatePage"));
+const ShowTimeEditPage = lazy(() => import("../pages/admin/showtimes/ShowTimeEditPage"));
+const ShowTimeDetailPage = lazy(() => import("../pages/admin/showtimes/ShowTimeDetailPage"));
 
-// 👈 Wrapper component với Suspense
+//  Wrapper component với Suspense
 const LazyWrapper = ({ children }) => (
   <Suspense fallback={<Loading tip="Đang tải trang..." />}>
     {children}
@@ -73,6 +81,42 @@ const adminRoutes = [
           { 
             path: "cinemas/edit/:id", 
             element: <LazyWrapper><CinemaEditPage /></LazyWrapper> 
+          },
+
+          // Rooms
+          { 
+            path: "rooms/create", 
+            element: <LazyWrapper><RoomCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "rooms/edit/:id", 
+            element: <LazyWrapper><RoomEditPage /></LazyWrapper> 
+          },
+          { 
+            path: "rooms/:id", 
+            element: <LazyWrapper><RoomDetailPage /></LazyWrapper> 
+          },
+          { 
+            path: "rooms", 
+            element: <LazyWrapper><RoomListPage /></LazyWrapper> 
+          },
+
+          // showtimes
+          { 
+            path: "show-times", 
+            element: <LazyWrapper><ShowTimeListPage /></LazyWrapper> 
+          },
+          { 
+            path: "show-times/create", 
+            element: <LazyWrapper><ShowTimeCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "show-times/edit/:id", 
+            element: <LazyWrapper><ShowTimeEditPage /></LazyWrapper> 
+          },
+          { 
+            path: "show-times/:id", 
+            element: <LazyWrapper><ShowTimeDetailPage /></LazyWrapper> 
           },
         ],
       },

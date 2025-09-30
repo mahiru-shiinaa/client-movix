@@ -11,3 +11,10 @@ export const ORDER_STATUS = {
   CANCELLED: 'cancelled',
   REFUNDED: 'refunded'
 };
+
+// Dùng lúc order đặt ghế
+export const  SHOWTIME_SEAT_STATUS = {
+  AVAILABLE: "available", // Ghế trống
+  BOOKED: "booked",       // Ghế đã được đặt
+  LOCKED: "locked",       // Ghế đang trong quá trình giao dịch
+}

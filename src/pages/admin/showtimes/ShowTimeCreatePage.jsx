@@ -1,47 +1,46 @@
 import { useState } from "react";
 import { message, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
-import RoomForm from "../../../components/Form/RoomForm";
-import { createRoom } from "../../../services/roomServices";
+import ShowTimeForm from "../../../components/Form/ShowTimeForm";
+import { createShowTime } from "../../../services/showTimeServices";
 
-function RoomCreatePage() {
+function ShowTimeCreatePage() {
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
 
-  const handleCreateRoom = async (values) => {
+  const handleCreateShowTime = async (values) => {
     setLoading(true);
     try {
+      console.log("Creating showtime with data:", values);
       
-      
-      const result = await createRoom(values);
+      const result = await createShowTime(values);
       if (result) {
         messageApi.open({
           type: "success",
-          content: "Tạo phòng chiếu mới thành công",
+          content: "Tạo suất chiếu mới thành công",
           duration: 5,
         });
         
-        //Redirect về danh sách sau khi tạo thành công
+        // Redirect về danh sách sau khi tạo thành công
         // setTimeout(() => {
-        //   navigate("/admin/rooms");
+        //   navigate("/admin/show-times");
         // }, 1500);
         
-        return true; // Báo thành công cho RoomForm
+        return true; // Báo thành công cho ShowTimeForm
       } else {
         messageApi.open({
           type: "error",
-          content: "Tạo phòng chiếu mới không thành công",
+          content: "Tạo suất chiếu mới không thành công",
           duration: 5,
         });
         return false; // Báo lỗi nhưng không reset form
       }
-      
     } catch (err) {
-      console.error("Create room error:", err);
+      console.error("Create showtime error:", err);
       messageApi.open({
         type: "error",
-        content: err.response?.data?.message || "Không thể tạo phòng chiếu",
+        content: err.response?.data?.message || "Không thể tạo suất chiếu",
         duration: 5,
       });
       return false; // Báo lỗi nhưng không reset form
@@ -51,7 +50,7 @@ function RoomCreatePage() {
   };
 
   const handleCancel = () => {
-    navigate("/admin/rooms");
+    navigate("/admin/show-times");
   };
 
   return (
@@ -62,16 +61,16 @@ function RoomCreatePage() {
           spinning={loading}
           tip={
             <>
-              <h2>Đang tiến hành tạo phòng chiếu</h2>
+              <h2>Đang tiến hành tạo suất chiếu</h2>
             </>
           }
           size="large"
         >
-          <h1>Tạo Phòng Chiếu Mới</h1>
-          <RoomForm
-            onFinish={handleCreateRoom}
+          <h1>Tạo Suất Chiếu Mới</h1>
+          <ShowTimeForm
+            onFinish={handleCreateShowTime}
             onCancel={handleCancel}
-            submitButtonText="Tạo phòng chiếu"
+            submitButtonText="Tạo suất chiếu"
           />
         </Spin>
       </div>
@@ -79,4 +78,4 @@ function RoomCreatePage() {
   );
 }
 
-export default RoomCreatePage;
+export default ShowTimeCreatePage;
