@@ -558,7 +558,7 @@ const RoomListPage = () => {
                 `${range[0]}-${range[1]} của ${total} phòng chiếu`,
               pageSizeOptions: ["10", "20", "50", "100"],
             }}
-            scroll={{ x: 1300 }}
+            scroll={{ x: 1000 }}
             size="middle"
             locale={{
               emptyText:

@@ -10,5 +10,8 @@ export const deleteShowTime = (id) => del(API_ENDPOINTS.SHOW_TIMES.DELETE(id));
 export const updateShowTime = (id, data) =>
   patch(API_ENDPOINTS.SHOW_TIMES.UPDATE(id), data);
 
+export const updateShowTimeStatus = (id, status) =>
+  patch(API_ENDPOINTS.SHOW_TIMES.UPDATE(id), { status });
+
 export const createShowTime = (data) => post(API_ENDPOINTS.SHOW_TIMES.CREATE, data);
 
