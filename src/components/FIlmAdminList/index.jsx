@@ -40,7 +40,7 @@ const FilmAdminList = () => {
       setError(null);
       const result = await getAllFilms();
       console.log('result', result);
-      setFilms(result.data || []);
+      setFilms(result.data.reverse() || []);
     } catch (err) {
       console.error('Error fetching films:', err);
       setError(err.response?.data?.message || 'Không thể tải danh sách phim');

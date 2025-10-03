@@ -4,6 +4,12 @@ export const API_ENDPOINTS = {
     LOGIN: '/auth/login',
     LOGOUT: '/auth/logout',
     REGISTER: '/auth/register',
+    REGISTER_CHECK_EMAIL: '/auth/register/check-email',
+    REGISTER_CANCEL: '/auth/register/cancel-register',
+    RESEND_OTP: '/auth/resendOtp',
+    FORGOT_PASSWORD: '/auth/password/forgot',
+    CHECK_OTP: '/auth/password/otp',
+    RESET_PASSWORD: '/auth/password/reset',
     ME: '/auth/me',
     REFRESH: '/auth/refresh'
   },

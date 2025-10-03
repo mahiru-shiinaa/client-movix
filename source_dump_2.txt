@@ -1,0 +1,1380 @@
+# ==================================================
+# Path: E:\HTMLCSS\PROJECT_ONTAP\Project_Movix\client
+# Detected tech: docker, gitlab_ci, javascript, python, react, typescript
+# ==================================================
+
+## DIRECTORY STRUCTURE
+```
+client/
+├── .git/
+├── node_modules/
+├── public/
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src/
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── videos/
+│   ├── components/
+│   │   ├── ErrorDisplay/
+│   │   │   └── index.jsx
+│   │   ├── FIlmAdminList/
+│   │   │   └── index.jsx
+│   │   ├── Form/
+│   │   │   ├── CinemaForm.jsx
+│   │   │   ├── FilmForm.jsx
+│   │   │   ├── RoomForm.jsx
+│   │   │   └── ShowTimeForm.jsx
+│   │   ├── Loading/
+│   │   │   └── index.jsx
+│   │   ├── MenuSider/
+│   │   │   └── index.jsx
+│   │   ├── RoomAdmin/
+│   │   ├── SeatCell/
+│   │   │   └── index.jsx
+│   │   ├── SeatLayoutBuilder/
+│   │   │   └── index.jsx
+│   │   └── YouTubeTrailer/
+│   │       └── index.jsx
+│   ├── constants/
+│   │   ├── api.js
+│   │   ├── image.js
+│   │   ├── index.js
+│   │   ├── pagination.js
+│   │   ├── roles.js
+│   │   └── status.js
+│   ├── helpers/
+│   │   ├── cookie.ts
+│   │   ├── getColumnSearchProps.js
+│   │   └── uploadImage.js
+│   ├── hooks/
+│   │   └── useImageUpload.js
+│   ├── layouts/
+│   │   ├── LayoutAdmin/
+│   │   │   ├── LayoutAdmin.scss
+│   │   │   └── index.jsx
+│   │   └── LayoutUser/
+│   │       └── index.jsx
+│   ├── pages/
+│   │   ├── admin/
+│   │   │   ├── Dashboard/
+│   │   │   │   └── index.jsx
+│   │   │   ├── Login/
+│   │   │   │   ├── Login.scss
+│   │   │   │   └── index.jsx
+│   │   │   ├── cinemas/
+│   │   │   │   ├── CinemaCreatePage.jsx
+│   │   │   │   ├── CinemaDetailPage.jsx
+│   │   │   │   ├── CinemaEditPage.jsx
+│   │   │   │   ├── CinemaListPage.jsx
+│   │   │   │   ├── cinemas.scss
+│   │   │   │   └── index.js
+│   │   │   ├── films/
+│   │   │   │   ├── FilmCreatePage.jsx
+│   │   │   │   ├── FilmDetailPage.jsx
+│   │   │   │   ├── FilmEditPage.jsx
+│   │   │   │   ├── FilmListPage.jsx
+│   │   │   │   ├── films.scss
+│   │   │   │   └── index.js
+│   │   │   ├── rooms/
+│   │   │   │   ├── RoomCreatePage.jsx
+│   │   │   │   ├── RoomDetailPage.jsx
+│   │   │   │   ├── RoomEditPage.jsx
+│   │   │   │   ├── RoomListPage.jsx
+│   │   │   │   └── index.js
+│   │   │   └── showtimes/
+│   │   │       ├── ShowTimeCreatePage.jsx
+│   │   │       ├── ShowTimeDetailPage.jsx
+│   │   │       ├── ShowTimeEditPage.jsx
+│   │   │       ├── ShowTimeListPage.jsx
+│   │   │       ├── index.js
+│   │   │       └── showtimes.scss
+│   │   ├── common/
+│   │   │   ├── LogoutPage.jsx
+│   │   │   ├── NotFound.jsx
+│   │   │   └── Unauthorized.jsx
+│   │   └── user/
+│   │       ├── Home/
+│   │       │   └── index.jsx
+│   │       ├── Search/
+│   │       │   └── index.jsx
+│   │       └── auth/
+│   │           ├── CheckEmailRegisterPage.jsx
+│   │           ├── ForgotOtpPage.jsx
+│   │           ├── ForgotPage.jsx
+│   │           ├── LoginPage.jsx
+│   │           ├── RegisterPage.jsx
+│   │           └── ResetPasswordPage.jsx
+│   ├── redux/
+│   │   ├── actions/
+│   │   │   └── auth.action.js
+│   │   └── reducers/
+│   │       ├── auth.reducer.js
+│   │       └── index.js
+│   ├── routes/
+│   │   ├── AllRoutes.jsx
+│   │   ├── PrivateRoutes.jsx
+│   │   ├── adminRoutes.js
+│   │   ├── commonRoutes.js
+│   │   ├── index.js
+│   │   └── userRoutes.js
+│   ├── services/
+│   │   ├── authServices.js
+│   │   ├── categoryServices.js
+│   │   ├── cinemaServices.js
+│   │   ├── cityServices.js
+│   │   ├── filmServices.js
+│   │   ├── roomServices.js
+│   │   ├── showTimeServices.js
+│   │   └── userServices.js
+│   ├── utils/
+│   │   ├── axiosClient.js
+│   │   └── index.js
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
+│   ├── index.js
+│   ├── logo.svg
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   └── store.js
+├── .env
+├── .gitignore
+├── README.md
+├── package-lock.json
+├── package.json
+└── source_dump.txt
+```
+
+## FILE CONTENTS
+
+### src\App.js
+```js
+import './App.css';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchUser } from './redux/actions/auth.action';
+import AllRoutes from './routes/AllRoutes';
+
+function App() {
+  const dispatch = useDispatch();
+   useEffect(() => {
+    dispatch(fetchUser()); // gọi 1 lần khi load trang
+  }, [dispatch]);
+
+  return (
+    <>
+      <AllRoutes />
+    </>
+  );
+}
+
+export default App;
+
+```
+
+### src\App.test.js
+```js
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+```
+
+### src\index.js
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './store';
+import '@ant-design/v5-patch-for-react-19';
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
+
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+```
+
+### src\reportWebVitals.js
+```js
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+```
+
+### src\setupTests.js
+```js
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+```
+
+### src\store.js
+```js
+import { createStore, applyMiddleware } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // dùng localStorage
+import {thunk} from "redux-thunk";
+import allReducers from "./redux/reducers";
+
+// Config redux-persist
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"] // ✅ chỉ persist reducer `auth`
+};
+
+// Gộp reducer persist
+const persistedReducer = persistReducer(persistConfig, allReducers);
+
+// Tạo store
+const store = createStore(
+  persistedReducer,
+  applyMiddleware(thunk)
+);
+
+// Tạo persistor để sử dụng trong PersistGate
+const persistor = persistStore(store);
+
+export { store, persistor };
+
+```
+
+### src\components\ErrorDisplay\index.jsx
+```jsx
+import { Alert, Button } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
+
+const ErrorDisplay = ({ 
+  message = "Có lỗi xảy ra", 
+  onRetry = null,
+  showRetry = true 
+}) => {
+  return (
+    <div style={{ padding: '20px' }}>
+      <Alert
+        message="Lỗi"
+        description={message}
+        type="error"
+        showIcon
+        action={
+          showRetry && onRetry && (
+            <Button size="small" icon={<ReloadOutlined />} onClick={onRetry}>
+              Thử lại
+            </Button>
+          )
+        }
+      />
+    </div>
+  );
+};
+
+export default ErrorDisplay;
+```
+
+### src\components\FIlmAdminList\index.jsx
+Không liên quan
+
+### src\components\Form\CinemaForm.jsx
+Không liên quan
+
+### src\components\Form\FilmForm.jsx
+Không liên quan
+
+### src\components\Form\RoomForm.jsx
+
+### src\components\Form\ShowTimeForm.jsx
+
+### src\components\Loading\index.jsx
+```jsx
+import { Spin } from "antd";
+
+const Loading = ({ size = "large", tip = "Đang tải..." }) => {
+  return (
+    <div style={{ 
+      textAlign: 'center', 
+      padding: '50px 0',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh'
+    }}>
+      <Spin size={size} tip={tip} spinning={true}>
+        <div style={{ minHeight: '200px', minWidth: '200px' }} />
+      </Spin>
+    </div>
+  );
+};
+
+export default Loading;
+```
+
+### src\components\MenuSider\index.jsx
+
+### src\components\SeatCell\index.jsx
+
+### src\components\SeatLayoutBuilder\index.jsx
+
+### src\components\YouTubeTrailer\index.jsx
+
+### src\constants\api.js
+```js
+export const API_ENDPOINTS = {
+  // Auth
+  AUTH: {
+    LOGIN: '/auth/login',
+    LOGOUT: '/auth/logout',
+    REGISTER: '/auth/register',
+    REGISTER_CHECK_EMAIL: '/auth/register/check-email',
+    REGISTER_CANCEL: '/auth/register/cancel-register',
+    RESEND_OTP: '/auth/resendOtp',
+    FORGOT_PASSWORD: '/auth/password/forgot',
+    CHECK_OTP: '/auth/password/otp',
+    RESET_PASSWORD: '/auth/password/reset',
+    ME: '/auth/me',
+    REFRESH: '/auth/refresh'
+  },
+  
+  // Films
+  FILMS: {
+    LIST: '/films',
+    CREATE: '/films',
+    DETAIL_BY_ID: (id) => `/films/${id}`,        // Admin: GET by ID
+    DETAIL_BY_SLUG: (slug) => `/films/slug/${slug}`,  // Public: GET by slug
+    UPDATE: (id) => `/films/${id}`,              // Admin: PATCH
+    DELETE: (id) => `/films/${id}`,              // Admin: DELETE
+    UPLOAD_POSTER: (id) => `/films/${id}/poster`
+  },
+
+  // Category
+  CATEGORIES: {
+    LIST: '/categories',
+    CREATE: '/categories',
+    DETAIL: (id) => `/categories/${id}`,
+    UPDATE: (id) => `/categories/${id}`,
+    DELETE: (id) => `/categories/${id}`
+  },
+  
+  // Cinemas
+  CINEMAS: {
+    LIST: '/cinemas',
+    CREATE: '/cinemas',
+    DETAIL_BY_ID: (id) => `/cinemas/${id}`,      // Admin: GET by ID
+    DETAIL_BY_SLUG: (slug) => `/cinemas/slug/${slug}`, // Public: GET by slug
+    UPDATE: (id) => `/cinemas/${id}`,
+    DELETE: (id) => `/cinemas/${id}`,
+    ROOMS: (id) => `/cinemas/${id}/rooms`
+  },
+  
+  // Rooms
+  ROOMS: {
+    LIST: '/rooms',
+    CREATE: '/rooms',
+    DETAIL: (id) => `/rooms/${id}`,
+    UPDATE: (id) => `/rooms/${id}`,
+    DELETE: (id) => `/rooms/${id}`
+  },
+
+  // Show Times
+  SHOW_TIMES: {
+    LIST: '/show-times',
+    CREATE: '/show-times',
+    DETAIL_BY_ID: (id) => `/show-times/${id}`,
+    DETAIL_BY_SLUG: (slug) => `/show-times/slug/${slug}`,
+    UPDATE: (id) => `/show-times/${id}`,
+    DELETE: (id) => `/show-times/${id}`,
+    BY_CINEMA: (cinemaId) => `/show-times/cinema/${cinemaId}`,
+    BY_FILM: (filmId) => `/show-times/film/${filmId}`
+  },
+  
+  // Users
+  USERS: {
+    LIST: '/users',
+    CREATE: '/users',
+    DETAIL: (id) => `/users/${id}`,
+    UPDATE: (id) => `/users/${id}`,
+    DELETE: (id) => `/users/${id}`,
+    PROFILE: '/users/profile'
+  },
+
+  // Comments
+  COMMENTS: {
+    LIST: '/comments',
+    CREATE: '/comments',
+    DETAIL: (id) => `/comments/${id}`,
+    UPDATE: (id) => `/comments/${id}`,
+    DELETE: (id) => `/comments/${id}`,
+    BY_FILM: (filmId) => `/comments/film/${filmId}`
+  },
+
+  // Promotions
+  PROMOTIONS: {
+    LIST: '/promotions',
+    CREATE: '/promotions',
+    DETAIL: (id) => `/promotions/${id}`,
+    UPDATE: (id) => `/promotions/${id}`,
+    DELETE: (id) => `/promotions/${id}`
+  },
+
+  // Orders
+  ORDERS: {
+    LIST: '/orders',
+    CREATE: '/orders',
+    DETAIL: (id) => `/orders/${id}`,
+    UPDATE: (id) => `/orders/${id}`,
+    DELETE: (id) => `/orders/${id}`,
+    MY_ORDERS: '/orders/my-orders'
+  },
+
+  // Upload
+  UPLOAD: {
+    IMAGE: '/upload/image',
+    VIDEO: '/upload/video'
+  },
+  CITIES: {
+    LIST: '/cities',
+    CREATE: '/cities',
+    DETAIL: (id) => `/cities/${id}`,
+    UPDATE: (id) => `/cities/${id}`,
+    DELETE: (id) => `/cities/${id}`
+  }
+};
+```
+
+### src\constants\image.js
+```js
+// src/constants/images.js
+export const DEFAULT_IMAGES = {
+  FILM_POSTER: "https://i.pinimg.com/736x/0b/0a/de/0b0adeec0cb5e9a427a616df27ba04f3.jpg",
+  CINEMA_LOGO: "https://www.shutterstock.com/image-vector/image-icon-trendy-flat-style-600nw-643080895.jpg",
+  USER_AVATAR: "https://via.placeholder.com/150x150/e8e8e8/999999?text=User",
+  CATEGORY_IMAGE: "https://via.placeholder.com/300x200/f5f5f5/999999?text=Category",
+  PROMOTION_BANNER: "https://via.placeholder.com/600x300/f0f8ff/999999?text=Promotion",
+  ROOM_IMAGE: "https://via.placeholder.com/400x200/fafafa/999999?text=Room",
+};
+```
+
+### src\constants\index.js
+```js
+// src/constants/index.js - Export tất cả constants
+export { ROLES } from './roles';
+export { API_ENDPOINTS } from './api';
+export { FILM_STATUS, ORDER_STATUS } from './status';
+export { PAGINATION } from './pagination';
+export { DEFAULT_IMAGES } from './image';
+
+// 👈 Bây giờ có thể import 1 lần:
+// import { ROLES, API_ENDPOINTS, FILM_STATUS } from '../constants';
+```
+
+### src\constants\pagination.js
+```js
+export const PAGINATION = {
+  DEFAULT_PAGE: 1,
+  DEFAULT_LIMIT: 10,
+  PAGE_SIZES: [10, 20, 50, 100]
+};
+```
+
+### src\constants\roles.js
+```js
+export const ROLES = {
+  ADMIN: 'admin',
+  USER: 'user'
+};
+```
+
+### src\constants\status.js
+```js
+export const FILM_STATUS = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  COMING_SOON: 'coming_soon'
+};
+
+export const ORDER_STATUS = {
+  PENDING: 'pending',
+  PAID: 'paid',
+  BLOCKED: 'blocked',
+  CANCELLED: 'cancelled',
+  REFUNDED: 'refunded'
+};
+
+// Dùng lúc order đặt ghế
+export const  SHOWTIME_SEAT_STATUS = {
+  AVAILABLE: "available", // Ghế trống
+  BOOKED: "booked",       // Ghế đã được đặt
+  LOCKED: "locked",       // Ghế đang trong quá trình giao dịch
+}
+```
+
+### src\helpers\cookie.ts
+```ts
+// Set a cookie with a name, value, and optional expiration days
+export const setCookie = (name: string, value: string, days?: number): void => {
+    const date = new Date();
+    if (days) {
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = `${name}=${value}; ${expires}; path=/`;
+    } else {
+        document.cookie = `${name}=${value}; path=/`;
+    }
+};
+
+// Get the value of a cookie by name
+export const getCookie = (name: string): string | null => {
+    const nameEQ = name + "=";
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nameEQ) === 0) {
+            return cookie.substring(nameEQ.length, cookie.length);
+        }
+    }
+    return null;
+};
+
+// Set a cookie with a name, value, and expiration in seconds
+export const setCookieCheck = (name: string, value: string, seconds: number): void => {
+    const date = new Date();
+    date.setTime(date.getTime() + seconds * 1000); // đổi seconds sang milliseconds
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = `${name}=${value}; ${expires}; path=/`;
+};
+
+// Delete a specific cookie by name
+export const deleteCookie = (name: string): void => {
+    setCookie(name, "", -1);
+};
+
+// Delete all cookies
+export const deleteAllCookie = (): void => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf("=");
+        const cookieName = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+        deleteCookie(cookieName);
+    }
+};
+
+```
+
+### src\helpers\getColumnSearchProps.js
+
+### src\helpers\uploadImage.js
+
+### src\hooks\useImageUpload.js
+
+### src\layouts\LayoutAdmin\index.jsx
+
+### src\layouts\LayoutUser\index.jsx
+```jsx
+const LayoutUser = () => {
+  return (
+    <>
+      Chưa code, code sau
+    </>
+  );
+};
+
+export default LayoutUser;
+```
+
+### src\pages\admin\cinemas\CinemaCreatePage.jsx
+
+### src\pages\admin\cinemas\CinemaDetailPage.jsx
+
+### src\pages\admin\cinemas\CinemaEditPage.jsx
+
+### src\pages\admin\cinemas\CinemaListPage.jsx
+
+### src\pages\admin\cinemas\index.js
+
+### src\pages\admin\films\FilmDetailPage.jsx
+
+### src\pages\admin\films\FilmEditPage.jsx
+
+### code không liên quan tỡi yêu cầu tôi đã bỏ hết
+
+### src\pages\common\LogoutPage.jsx
+```jsx
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../services/authServices";
+import { fetchUser } from "../../redux/actions/auth.action";
+
+function LogoutPage() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  useEffect(() => {
+    const fetchLogout = async () => {
+      try {
+        await logout();
+        
+        dispatch(fetchUser());
+        navigate("/");
+      } catch (err) {
+        alert(err.response?.data?.message || "Không thể lấy thông tin");
+      }
+    };
+    fetchLogout();
+  }, [isAuthenticated]);
+  return <></>;
+}
+
+export default LogoutPage;
+
+```
+
+### src\pages\common\NotFound.jsx
+```jsx
+// src/pages/common/NotFound.jsx (404 Page)
+import React from 'react';
+import { Result, Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+
+const NotFound = () => {
+  return (
+    <div style={{ 
+      height: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      backgroundColor: '#f5f5f5'
+    }}>
+      <Result
+        status="404"
+        title="404"
+        subTitle="Xin lỗi, trang bạn tìm kiếm không tồn tại."
+        extra={[
+          <Button type="primary" key="home" icon={<HomeOutlined />}>
+            <Link to="/">Về trang chủ</Link>
+          </Button>,
+          <Button key="back" icon={<ArrowLeftOutlined />} onClick={() => window.history.back()}>
+            Quay lại
+          </Button>
+        ]}
+      />
+    </div>
+  );
+};
+
+export default NotFound;
+```
+
+### src\pages\common\Unauthorized.jsx
+```jsx
+// src/pages/common/Unauthorized.jsx (403 Page)
+import React from 'react';
+import { Result, Button } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { HomeOutlined, LoginOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+
+const Unauthorized = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  // Nút action khác nhau tùy trạng thái user
+  const getExtraButtons = () => {
+    if (!isAuthenticated) {
+      // Chưa đăng nhập
+      return [
+        <Button type="primary" key="login" icon={<LoginOutlined />}>
+          <Link to="/admin/auth/login">Đăng nhập</Link>
+        </Button>,
+        <Button key="home" icon={<HomeOutlined />}>
+          <Link to="/">Về trang chủ</Link>
+        </Button>
+      ];
+    }
+
+    // Đã đăng nhập nhưng không đủ quyền
+    const homeRoute = user?.role === 'admin' ? '/admin/dashboard' : '/';
+    
+    return [
+      <Button type="primary" key="home" icon={<HomeOutlined />}>
+        <Link to={homeRoute}>Về trang chính</Link>
+      </Button>,
+      <Button key="back" icon={<ArrowLeftOutlined />} onClick={() => navigate(-1)}>
+        Quay lại
+      </Button>
+    ];
+  };
+
+  return (
+    <div style={{ 
+      height: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      backgroundColor: '#f5f5f5'
+    }}>
+      <Result
+        status="403"
+        title="403"
+        subTitle={
+          !isAuthenticated 
+            ? "Bạn cần đăng nhập để truy cập trang này." 
+            : "Xin lỗi, bạn không có quyền truy cập trang này."
+        }
+        extra={getExtraButtons()}
+      />
+    </div>
+  );
+};
+
+export default Unauthorized;
+```
+
+### src\pages\user\auth\CheckEmailRegisterPage.jsx
+```jsx
+const CheckEmailRegisterPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default CheckEmailRegisterPage;
+```
+
+### src\pages\user\auth\ForgotOtpPage.jsx
+```jsx
+const ForgotOtpPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default ForgotOtpPage;
+```
+
+### src\pages\user\auth\ForgotPage.jsx
+```jsx
+const ForgotPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default ForgotPage;
+```
+
+### src\pages\user\auth\LoginPage.jsx
+```jsx
+const LoginPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default LoginPage;
+```
+
+### src\pages\user\auth\RegisterPage.jsx
+```jsx
+const RegisterPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default RegisterPage;
+```
+
+### src\pages\user\auth\ResetPasswordPage.jsx
+```jsx
+const ResetPasswordPage = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default ResetPasswordPage;
+```
+
+### src\pages\user\Home\index.jsx
+```jsx
+const Home = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default Home;
+```
+
+### src\pages\user\Search\index.jsx
+```jsx
+const Search = () => {
+  return (
+    <>
+      content
+    </>
+  );
+};
+
+export default Search;
+```
+
+### src\redux\actions\auth.action.js
+```js
+// src/redux/actions/auth.action.js
+import { checkLogin } from "../../services/authServices";
+
+// Action types
+export const SET_USER = "SET_USER";
+export const LOGOUT = "LOGOUT";
+export const AUTH_LOADING = "AUTH_LOADING";
+export const AUTH_ERROR = "AUTH_ERROR";
+
+// Thunk Action: gọi API và lưu user vào store
+export const fetchUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: AUTH_LOADING }); // 👈 bắt đầu loading
+    
+    const check = await checkLogin();
+    dispatch({ type: SET_USER, payload: check.user });
+  } catch (error) {
+    console.error("Lỗi lấy user:", error.response?.data || error.message);
+    
+    // 👈 dispatch lỗi thay vì chỉ logout
+    dispatch({ 
+      type: AUTH_ERROR, 
+      payload: error.response?.data?.message || "Không thể xác thực người dùng" 
+    });
+    
+    dispatch({ type: LOGOUT }); // Token sai, hết hạn => logout
+  }
+};
+```
+
+### src\redux\reducers\auth.reducer.js
+```js
+// src/redux/reducers/auth.reducer.js
+import { ROLES } from "../../constants";
+import { SET_USER, LOGOUT } from "../actions/auth.action";
+
+const initialState = {
+  user: null,
+  isAuthenticated: false,
+  loading: false,    // 👈 trạng thái đang tải
+  error: null,       // 👈 lưu lỗi nếu có
+};
+
+const authReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "AUTH_LOADING":
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        loading: false,    // 👈 tắt loading
+        error: null,
+      };
+    
+    case LOGOUT:
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        loading: false,
+        error: null,
+      };
+    
+    case "AUTH_ERROR":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload, // 👈 lưu thông báo lỗi
+      };
+    
+    default:
+      return state;
+  }
+};
+//  Helper function để check role
+export const isAdmin = (user) => user?.role === ROLES.ADMIN;
+export const isUser = (user) => user?.role === ROLES.USER;
+
+export default authReducer;
+```
+
+### src\redux\reducers\index.js
+```js
+import { combineReducers } from "redux"
+import authReducer from "./auth.reducer";
+
+
+
+
+const allReducers = combineReducers({
+    auth: authReducer,
+    //Thêm nhiều reducer ở đây
+});
+
+export default allReducers;
+```
+
+### src\routes\adminRoutes.js
+```js
+// src/routes/adminRoutes.js
+import { lazy, Suspense } from "react";
+import LayoutAdmin from "../layouts/LayoutAdmin";
+import PrivateRoutes from "./PrivateRoutes";
+import Loading from "../components/Loading";
+
+// 👈 Lazy load các component
+const DashBoardPage = lazy(() => import("../pages/admin/Dashboard"));
+const FilmListPage = lazy(() => import("../pages/admin/films/FilmListPage"));
+const FilmCreatePage = lazy(() => import("../pages/admin/films/FilmCreatePage"));
+const FilmEditPage = lazy(() => import("../pages/admin/films/FilmEditPage"));
+const FilmDetailPage = lazy(() => import("../pages/admin/films/FilmDetailPage"));
+const CinemaListPage = lazy(() => import("../pages/admin/cinemas/CinemaListPage"));
+const CinemaDetailPage = lazy(() => import("../pages/admin/cinemas/CinemaDetailPage"));
+const CinemaCreatePage = lazy(() => import("../pages/admin/cinemas/CinemaCreatePage"));
+const CinemaEditPage = lazy(() => import("../pages/admin/cinemas/CinemaEditPage"));
+const RoomCreatePage = lazy(() => import("../pages/admin/rooms/RoomCreatePage"));
+const RoomEditPage = lazy(() => import("../pages/admin/rooms/RoomEditPage"));
+const RoomDetailPage = lazy(() => import("../pages/admin/rooms/RoomDetailPage"));
+const RoomListPage = lazy(() => import("../pages/admin/rooms/RoomListPage"));
+const ShowTimeListPage = lazy(() => import("../pages/admin/showtimes/ShowTimeListPage"));
+const ShowTimeCreatePage = lazy(() => import("../pages/admin/showtimes/ShowTimeCreatePage"));
+const ShowTimeEditPage = lazy(() => import("../pages/admin/showtimes/ShowTimeEditPage"));
+const ShowTimeDetailPage = lazy(() => import("../pages/admin/showtimes/ShowTimeDetailPage"));
+
+//  Wrapper component với Suspense
+const LazyWrapper = ({ children }) => (
+  <Suspense fallback={<Loading tip="Đang tải trang..." />}>
+    {children}
+  </Suspense>
+);
+
+const adminRoutes = [
+  {
+    element: <PrivateRoutes allowedRoles={["admin"]} redirectPath="/admin/auth/login" />,
+    children: [
+      {
+        path: "/admin",
+        element: <LayoutAdmin />,
+        children: [
+          { 
+            index: true, 
+            element: <LazyWrapper><DashBoardPage /></LazyWrapper> 
+          },
+          { 
+            path: "dashboard", 
+            element: <LazyWrapper><DashBoardPage /></LazyWrapper> 
+          },
+
+          // Films
+          { 
+            path: "films", 
+            element: <LazyWrapper><FilmListPage /></LazyWrapper> 
+          },
+          { 
+            path: "films/:id", 
+            element: <LazyWrapper><FilmDetailPage /></LazyWrapper> 
+          },
+          { 
+            path: "films/create", 
+            element: <LazyWrapper><FilmCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "films/edit/:id", 
+            element: <LazyWrapper><FilmEditPage /></LazyWrapper> 
+          },
+
+          // Cinemas
+          { 
+            path: "cinemas", 
+            element: <LazyWrapper><CinemaListPage /></LazyWrapper> 
+          },
+          { 
+            path: "cinemas/:id", 
+            element: <LazyWrapper><CinemaDetailPage /></LazyWrapper> 
+          },
+          { 
+            path: "cinemas/create", 
+            element: <LazyWrapper><CinemaCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "cinemas/edit/:id", 
+            element: <LazyWrapper><CinemaEditPage /></LazyWrapper> 
+          },
+
+          // Rooms
+          { 
+            path: "rooms/create", 
+            element: <LazyWrapper><RoomCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "rooms/edit/:id", 
+            element: <LazyWrapper><RoomEditPage /></LazyWrapper> 
+          },
+          { 
+            path: "rooms/:id", 
+            element: <LazyWrapper><RoomDetailPage /></LazyWrapper> 
+          },
+          { 
+            path: "rooms", 
+            element: <LazyWrapper><RoomListPage /></LazyWrapper> 
+          },
+
+          // showtimes
+          { 
+            path: "show-times", 
+            element: <LazyWrapper><ShowTimeListPage /></LazyWrapper> 
+          },
+          { 
+            path: "show-times/create", 
+            element: <LazyWrapper><ShowTimeCreatePage /></LazyWrapper> 
+          },
+          { 
+            path: "show-times/edit/:id", 
+            element: <LazyWrapper><ShowTimeEditPage /></LazyWrapper> 
+          },
+          { 
+            path: "show-times/:id", 
+            element: <LazyWrapper><ShowTimeDetailPage /></LazyWrapper> 
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export default adminRoutes;
+```
+
+### src\routes\AllRoutes.jsx
+```jsx
+import { useRoutes } from "react-router-dom";
+import routes from "./index";
+
+const  AllRoutes = () => {
+  return useRoutes(routes);
+}
+
+export default AllRoutes;
+
+```
+
+### src\routes\commonRoutes.js
+```js
+import LayoutUser from "../layouts/LayoutUser";
+import LoginAdmin from "../pages/admin/Login";
+import LogoutPage from "../pages/common/LogoutPage";
+import NotFound from "../pages/common/NotFound";
+import Unauthorized from "../pages/common/Unauthorized";
+import Home from "../pages/user/Home";
+import Search from "../pages/user/Search";
+import LoginPage from "../pages/user/auth/LoginPage";
+import RegisterPage from "../pages/user/auth/RegisterPage";
+import ForgotPage from "../pages/user/auth/ForgotPage";
+import ForgotOtpPage from "../pages/user/auth/ForgotOtpPage";
+import ResetPasswordPage from "../pages/user/auth/ResetPasswordPage";
+import CheckEmailRegisterPage from "../pages/user/auth/CheckEmailRegisterPage";
+
+
+const commonRoutes = [
+  {
+    path: "/",
+    element: <LayoutUser />,
+    children: [
+       { index: true, element: <Home /> },
+       { path: "auth/login", element: <LoginPage /> },
+       { path: "auth/register", element: <RegisterPage /> },  
+       { path: "auth/register/check-email", element: <CheckEmailRegisterPage /> },
+       { path: "auth/password/forgot", element: <ForgotPage /> },  
+       { path: "auth/password/otp", element: <ForgotOtpPage /> }, 
+       { path: "auth/password/reset", element: <ResetPasswordPage /> },
+       { path: "search", element: <Search /> },
+      // { path: "films/:id", element: <FilmDetailPage /> },
+    ],
+  },
+  {
+    path: "/admin",
+    children: [
+      {
+        path: "auth/login",
+        element: <LoginAdmin />
+      }
+    ]
+  },
+   // 👈 Error pages - không cần layout
+  {
+    path: "/unauthorized",
+    element: <Unauthorized />  // 403 Forbidden
+  },
+  {
+    path: "/404",
+    element: <NotFound />      // 404 Not Found
+  },
+  // 👈 Catch-all route - phải đặt cuối cùng
+  {
+    path: "*",
+    element: <NotFound />      // Bất kỳ route nào không match sẽ hiển thị 404
+  },
+  
+    { path: "auth/logout", element: <LogoutPage /> },
+  
+];
+
+export default commonRoutes;
+
+```
+
+### src\routes\index.js
+```js
+import commonRoutes from "./commonRoutes";
+import userRoutes from "./userRoutes";
+import adminRoutes from "./adminRoutes";
+
+const routes = [
+  ...commonRoutes,
+  ...userRoutes,
+  ...adminRoutes,
+];
+
+export default routes;
+
+
+
+
+
+```
+
+### src\routes\PrivateRoutes.jsx
+```jsx
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
+
+/**
+ * PrivateRoutes
+ * @param {Array} allowedRoles - danh sách role được phép (["admin"], ["user"], ["admin","user"])
+ * @param {String} redirectPath - đường dẫn nếu chưa đăng nhập (mặc định: "/auth/login")
+ */
+const  PrivateRoutes = ({ allowedRoles = [], redirectPath = "/auth/login" }) => {
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const role = user?.role || "";
+  // Chưa đăng nhập
+  if (!isAuthenticated) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  // Không đúng role
+  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // Pass → cho phép vào các route con
+  return <Outlet />;
+}
+
+export default PrivateRoutes;
+
+```
+
+### src\routes\userRoutes.js
+```js
+import LayoutUser from "../layouts/LayoutUser";
+import PrivateRoutes from "./PrivateRoutes";
+
+
+const userRoutes = [
+  {
+    element: <PrivateRoutes allowedRoles={["user"]} redirectPath="/auth/login" />,
+    children: [
+      {
+        element: <LayoutUser />,
+        children: [
+          // { path: "profile", element: <ProfilePage /> },
+          // { path: "my-tickets", element: <MyTicketsPage /> },
+          // { path: "payment", element: <PaymentPage /> },
+          // { path: "carts", element: <CartPage /> },
+        ],
+      },
+    ],
+  },
+];
+
+export default userRoutes;
+
+```
+
+### src\services\authServices.js
+```js
+import { API_ENDPOINTS } from "../constants";
+import { get, post } from "../utils";
+
+// -- Đăng nhập
+export const login = (userData) => post(API_ENDPOINTS.AUTH.LOGIN, userData);
+
+// -- Đăng ký
+export const register = (userData) =>
+  post(API_ENDPOINTS.AUTH.REGISTER, userData);
+
+
+// -- Check Email OTP Đăng ký
+export const checkEmailOtp = (data) =>
+  post(API_ENDPOINTS.AUTH.REGISTER_CHECK_EMAIL, data);
+
+// - Hủy đăng ký
+export const cancelRegister = (email) =>
+  post(API_ENDPOINTS.AUTH.REGISTER_CANCEL, { email });
+
+// -- Resend OTP
+export const resendOtp = (data) =>
+  post(API_ENDPOINTS.AUTH.RESEND_OTP, data);
+
+// -- Forgot Password
+export const forgotPassword = (data) =>
+  post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, data);
+
+// -- Check OTP
+export const checkOtp = (data) =>
+  post(API_ENDPOINTS.AUTH.CHECK_OTP, data);
+
+// -- Reset Password
+export const resetPassword = (data) =>
+  post(API_ENDPOINTS.AUTH.RESET_PASSWORD, data);
+
+
+// -- Đăng Xuất
+export const logout = () => post(API_ENDPOINTS.AUTH.LOGOUT);
+
+// -- Kiểm tra Login
+export const checkLogin = () => get(API_ENDPOINTS.AUTH.ME);
+
+```
+
+
+### src\services\userServices.js
+```js
+
+```
+
+### src\utils\axiosClient.js
+```js
+// services/axiosClient.js
+import axios from "axios";
+// ✅ Sử dụng environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api/v1";
+
+const axiosClient = axios.create({
+  baseURL: API_BASE_URL, // 👈 thay đổi tùy môi trường
+  withCredentials: true,           // 👈 để gửi/nhận cookie HttpOnly
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// ✅ Interceptors (tùy chọn): thêm token hoặc xử lý lỗi chung
+axiosClient.interceptors.request.use(
+  (config) => {
+    // Nếu dùng localStorage token thì thêm ở đây (cách 1 - header)
+    // const token = localStorage.getItem("token");
+    // if (token) config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+axiosClient.interceptors.response.use(
+  (response) => response.data, // chỉ lấy `data` cho gọn
+  (error) => {
+    console.error("API error:", error.response);
+    return Promise.reject(error);
+  }
+);
+
+export default axiosClient;
+
+```
+
+### src\utils\index.js
+```js
+import axiosClient from "./axiosClient";
+
+export const get = (url, config) => axiosClient.get(url, config);
+
+export const post = (url, data, config) => axiosClient.post(url, data, config);
+
+export const patch = (url, data, config) => axiosClient.patch(url, data, config);
+
+export const del = (url, config) => axiosClient.delete(url, config);
+
+```

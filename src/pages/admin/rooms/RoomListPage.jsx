@@ -69,8 +69,8 @@ const RoomListPage = () => {
 
       console.log("Room result:", roomResult);
 
-      setRooms(roomResult.data || []);
-      setFilteredRooms(roomResult.data || []);
+      setRooms(roomResult.data.reverse() || []);
+      setFilteredRooms(roomResult.data.reverse() || []);
       setCities(cityResult || []);
       setCinemas(cinemaResult || []);
     } catch (err) {

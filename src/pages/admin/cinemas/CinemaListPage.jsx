@@ -67,8 +67,8 @@ const CinemaListPage = () => {
       console.log("Cinema result:", cinemaResult);
       console.log("City result:", cityResult);
 
-      setCinemas(cinemaResult || []);
-      setFilteredCinemas(cinemaResult || []);
+      setCinemas(cinemaResult.reverse() || []);
+      setFilteredCinemas(cinemaResult.reverse() || []);
       setCities(cityResult || []);
     } catch (err) {
       console.error("Error fetching data:", err);
